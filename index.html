@@ -1,456 +1,1172 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dr Rasha — Homepage</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400;1,500&family=Jost:wght@200;300;400&display=swap" rel="stylesheet"/>
-  <style>
-    :root{--near-black:#0A0A0A;--cream:#F5F0E8;--warm-bg:#EDE8DC;--gold:#B8965A;--white:#FFFFFF;--mid-grey:#6B6560;--border:rgba(10,10,10,0.12)}
-    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-    html{scroll-behavior:smooth}
-    body{background:var(--cream);color:var(--near-black);font-family:'Jost',sans-serif;font-weight:300;-webkit-font-smoothing:antialiased;overflow-x:hidden}
-    .announce-bar{background:var(--near-black);color:var(--white);font-size:10px;letter-spacing:.12em;text-transform:uppercase;display:flex;align-items:center;justify-content:center;height:36px;overflow:hidden;white-space:nowrap}
-    .announce-item{padding:0 16px}.announce-sep{opacity:.3}
-    .hide-mobile{display:flex;align-items:center}
-    .nav{background:var(--cream);border-bottom:1px solid var(--border);display:flex;align-items:stretch;height:64px;position:sticky;top:0;z-index:200}
-    .nav-left{display:flex;align-items:stretch}
-    .nav-cell{display:flex;align-items:center;padding:0 28px;border-right:1px solid var(--border);font-size:11px;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;color:var(--near-black);text-decoration:none;white-space:nowrap;background:none;border-top:none;border-bottom:none;border-left:none;font-family:'Jost',sans-serif}
-    .nav-logo{flex:1;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:300;letter-spacing:.3em;text-transform:uppercase}
-    .nav-right{display:flex;align-items:stretch;margin-left:auto}
-    .nav-cell.shop{border-left:1px solid var(--border);border-right:none}
-    .nav-cell.book{background:var(--near-black);color:var(--white);padding:0 28px;font-size:10px;letter-spacing:.2em;border:none}
-    .nav-cart{display:flex;align-items:center;padding:0 18px;border-left:1px solid var(--border);cursor:pointer;position:relative}
-    .nav-hamburger{display:none;align-items:center;justify-content:center;padding:0 20px;border-left:1px solid var(--border);cursor:pointer;background:none;border-top:none;border-right:none;border-bottom:none;flex-direction:column;gap:5px}
-    .ham-line{width:22px;height:1px;background:var(--near-black);transition:transform .25s,opacity .25s;display:block}
-    .mobile-menu{position:fixed;inset:0;top:100px;background:var(--cream);z-index:190;display:flex;flex-direction:column;padding:40px 28px;transform:translateX(100%);transition:transform .35s cubic-bezier(.25,.46,.45,.94);border-top:1px solid var(--border)}
-    .mobile-menu.open{transform:translateX(0)}
-    .mobile-menu-item{font-size:13px;letter-spacing:.16em;text-transform:uppercase;padding:22px 0;border-bottom:1px solid var(--border);color:var(--near-black);cursor:pointer;display:flex;align-items:center;justify-content:space-between}
-    .mobile-menu-book{margin-top:32px;background:var(--near-black);color:var(--white);font-family:'Jost',sans-serif;font-size:10px;letter-spacing:.2em;text-transform:uppercase;padding:18px 32px;border:none;cursor:pointer;width:100%}
-    .btn-primary{background:var(--near-black);color:var(--white);font-family:'Jost',sans-serif;font-size:10px;font-weight:400;letter-spacing:.2em;text-transform:uppercase;padding:16px 36px;border:none;cursor:pointer;white-space:nowrap}
-    .btn-primary:hover{background:#2a2a2a}
-    .btn-ghost{background:transparent;color:var(--near-black);font-family:'Jost',sans-serif;font-size:10px;font-weight:300;letter-spacing:.18em;text-transform:uppercase;padding:16px 0;border:none;cursor:pointer;border-bottom:1px solid var(--near-black);white-space:nowrap}
-    .btn-ghost:hover{color:var(--gold);border-color:var(--gold)}
-    .btn-primary-white{background:var(--white);color:var(--near-black);font-family:'Jost',sans-serif;font-size:10px;font-weight:400;letter-spacing:.2em;text-transform:uppercase;padding:18px 52px;border:none;cursor:pointer}
-    .btn-wa{background:transparent;color:var(--near-black);font-family:'Jost',sans-serif;font-size:10px;font-weight:300;letter-spacing:.18em;text-transform:uppercase;padding:16px 0;border:none;cursor:pointer;border-bottom:1px solid var(--near-black);display:flex;align-items:center;gap:8px;white-space:nowrap}
-    .btn-wa svg{width:13px;height:13px;fill:currentColor;flex-shrink:0}
-    .btn-wa-w{background:transparent;color:var(--white);font-family:'Jost',sans-serif;font-size:10px;font-weight:300;letter-spacing:.18em;text-transform:uppercase;padding:16px 0;border:none;cursor:pointer;border-bottom:1px solid rgba(255,255,255,.4);display:flex;align-items:center;gap:8px;white-space:nowrap}
-    .btn-wa-w svg{width:13px;height:13px;fill:currentColor;flex-shrink:0}
-    .sec{padding:88px 80px}.sec-alt{background:var(--warm-bg)}.sec-dark{background:var(--near-black);color:var(--white)}
-    .sec-tag{font-size:9px;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);margin-bottom:14px;display:block}
-    .sec-title{font-family:'Cormorant Garamond',serif;font-size:clamp(30px,3.5vw,48px);font-weight:300;font-style:italic;line-height:1.1;color:inherit}
-    .sec-header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:52px;gap:16px}
-    .hero{display:grid;grid-template-columns:1fr 1fr;min-height:600px;max-height:680px}
-    .hero-content{display:flex;flex-direction:column;justify-content:center;padding:64px 64px 64px 80px;background:var(--cream)}
-    .hero-tag{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:20px}
-    .hero-title{font-family:'Cormorant Garamond',serif;font-size:clamp(44px,5vw,74px);font-weight:300;font-style:italic;line-height:1.02;letter-spacing:-.01em;margin-bottom:22px;color:var(--near-black)}
-    .hero-sub{font-size:14px;font-weight:300;line-height:1.8;color:var(--mid-grey);max-width:380px;margin-bottom:8px;letter-spacing:.02em}
-    .hero-bullets{display:flex;flex-direction:column;gap:10px;margin-bottom:32px;margin-top:-12px}
-    .hero-bullet{display:flex;align-items:center;gap:10px;font-size:12px;font-weight:300;color:var(--mid-grey);letter-spacing:.04em}
-    .hero-bullet-dot{width:4px;height:4px;border-radius:50%;background:var(--gold);flex-shrink:0;display:inline-block}
-    .tp-row{display:flex;align-items:center;gap:10px;margin-top:2px}
-    .tp-stars{display:flex;gap:2px}
-    .hero-actions{display:flex;align-items:center;gap:28px;flex-wrap:wrap;margin-bottom:0}
-    .hero-img{overflow:hidden;background:var(--warm-bg)}
-    .hero-img-ph{width:100%;height:100%;min-height:300px;background:linear-gradient(160deg,#E4DDD0 0%,#C8BCA8 60%,#BFB09A 100%);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;color:var(--mid-grey);font-size:11px;letter-spacing:.14em;text-transform:uppercase}
-    .trust-bar{background:var(--cream);border-top:1px solid var(--border);border-bottom:1px solid var(--border);display:flex;align-items:stretch}
-    .tbc{flex:1;display:flex;align-items:center;justify-content:center;gap:12px;padding:20px 24px;border-right:1px solid var(--border);white-space:nowrap}
-    .tbc:last-child{border-right:none}
-    .tbc-label{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--near-black)}
-    .tbc-sub{font-size:10px;letter-spacing:.08em;color:var(--mid-grey)}
-    .tx-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;margin-top:52px}
-    .tx-card{display:flex;flex-direction:column;cursor:pointer}
-    .tx-card:hover{opacity:.88}
-    .tx-img{aspect-ratio:3/4;overflow:hidden}
-    .tx-img-ph{width:100%;height:100%;display:flex;align-items:flex-end;padding:20px}
-    .tx-card:nth-child(1) .tx-img-ph{background:linear-gradient(160deg,#E4DDD0 0%,#C8BCA8 100%)}
-    .tx-card:nth-child(2) .tx-img-ph{background:linear-gradient(160deg,#DDD6C8 0%,#C0B49C 100%)}
-    .tx-card:nth-child(3) .tx-img-ph{background:linear-gradient(160deg,#D8D0C2 0%,#B8AA92 100%)}
-    .tx-card:nth-child(4) .tx-img-ph{background:linear-gradient(160deg,#D4CCC0 0%,#B4A890 100%)}
-    .tx-body{padding:20px 0 0;display:flex;flex-direction:column;flex:1}
-    .tx-cat{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:6px}
-    .tx-name{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;font-style:italic;color:var(--near-black);line-height:1.15;margin-bottom:8px}
-    .tx-desc{font-size:12px;font-weight:300;line-height:1.7;color:var(--mid-grey);flex:1}
-    .why-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:56px;border-top:1px solid var(--border)}
-    .why-card{padding:48px 48px 48px 0;border-right:1px solid var(--border);display:flex;flex-direction:column;gap:16px}
-    .why-card:last-child{border-right:none;padding-right:0}
-    .why-card:not(:first-child){padding-left:48px}
-    .why-num{font-family:'Cormorant Garamond',serif;font-size:56px;font-weight:300;line-height:1;color:rgba(184,150,90,0.2);letter-spacing:-.02em}
-    .why-title{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--near-black)}
-    .why-body{font-size:13px;font-weight:300;line-height:1.8;color:var(--mid-grey);letter-spacing:.02em}
-    .rev-wrap{overflow:hidden}
-    .rev-track{display:flex;gap:24px;transition:transform .5s cubic-bezier(.25,.46,.45,.94)}
-    .rev-card{flex-shrink:0;border:1px solid var(--border);padding:36px 32px;background:var(--cream);display:flex;flex-direction:column;gap:18px}
-    .rev-stars{display:flex;gap:3px}
-    .star{color:var(--gold);font-size:12px}
-    .rev-text{font-family:'Cormorant Garamond',serif;font-size:17px;font-style:italic;font-weight:300;line-height:1.65;color:var(--near-black);flex:1}
-    .rev-meta{display:flex;align-items:center;justify-content:space-between;padding-top:18px;border-top:1px solid var(--border)}
-    .rev-author{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--near-black)}
-    .rev-ver{font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:5px}
-    .rev-ctrl{display:flex;align-items:center;gap:14px;margin-top:36px}
-    .rev-nav{width:44px;height:44px;border:1px solid var(--border);background:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;color:var(--near-black)}
-    .rev-nav:disabled{opacity:.3;cursor:default}
-    .rev-dots{display:flex;gap:6px}
-    .rdot{width:5px;height:5px;border-radius:50%;background:var(--border);cursor:pointer;transition:background .2s}
-    .rdot.active{background:var(--near-black)}
-    .cta-banner{background:var(--warm-bg);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:36px 80px;display:flex;align-items:center;justify-content:space-between;gap:32px}
-    .cta-banner-text{font-family:'Cormorant Garamond',serif;font-size:clamp(18px,2vw,26px);font-weight:300;font-style:italic;color:var(--near-black)}
-    .cta-banner-sub{font-size:12px;font-weight:300;color:var(--mid-grey);margin-top:5px;letter-spacing:.04em}
-    .cta-actions{display:flex;align-items:center;gap:28px;flex-shrink:0;flex-wrap:wrap}
-    .cta-safety{display:flex;align-items:center;gap:16px;margin-top:10px;flex-wrap:wrap}
-    .cta-si{display:flex;align-items:center;gap:6px;font-size:10px;font-weight:300;color:var(--mid-grey);letter-spacing:.06em}
-    .cta-si::before{content:'';width:3px;height:3px;border-radius:50%;background:var(--gold);display:inline-block;flex-shrink:0}
-    .ba-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px}
-    .ba-label{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--mid-grey);margin-top:14px;display:block}
-    .ba-slider{position:relative;aspect-ratio:3/4;overflow:hidden;cursor:col-resize;user-select:none}
-    .ba-after{position:absolute;inset:0;background:linear-gradient(135deg,#D8D0C2 0%,#C4BAA8 100%);display:flex;align-items:flex-end;padding:10px}
-    .ba-before{position:absolute;inset:0;overflow:hidden}
-    .ba-before-inner{position:absolute;inset:0;background:linear-gradient(135deg,#E8E0D0 0%,#D4C9B5 100%);display:flex;align-items:flex-end;padding:10px}
-    .ba-slabel{font-size:8px;letter-spacing:.18em;text-transform:uppercase;color:rgba(10,10,10,.45);pointer-events:none}
-    .ba-div{position:absolute;top:0;bottom:0;width:1px;background:#fff;pointer-events:none;z-index:3}
-    .ba-handle{position:absolute;top:50%;transform:translate(-50%,-50%);width:36px;height:36px;border-radius:50%;background:#fff;border:1px solid rgba(10,10,10,.12);display:flex;align-items:center;justify-content:center;pointer-events:none;z-index:4;gap:5px;box-shadow:0 2px 8px rgba(0,0,0,.12)}
-    .ba-arr{width:0;height:0;border-top:4px solid transparent;border-bottom:4px solid transparent}
-    .ba-arr.l{border-right:5px solid rgba(10,10,10,.4)}
-    .ba-arr.r{border-left:5px solid rgba(10,10,10,.4)}
-    .ba-ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none}
-    .shop-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;margin-top:0}
-    .shop-card{display:flex;flex-direction:column;cursor:pointer}
-    .shop-card:hover{opacity:.88}
-    .shop-img{aspect-ratio:1/1;overflow:hidden}
-    .shop-img-ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center}
-    .shop-card:nth-child(1) .shop-img-ph{background:linear-gradient(160deg,#E8E0D4 0%,#D0C8B8 100%)}
-    .shop-card:nth-child(2) .shop-img-ph{background:linear-gradient(160deg,#E0D8CC 0%,#C8C0B0 100%)}
-    .shop-card:nth-child(3) .shop-img-ph{background:linear-gradient(160deg,#D8D0C4 0%,#C0B8A8 100%)}
-    .shop-card:nth-child(4) .shop-img-ph{background:linear-gradient(160deg,#D4CCC0 0%,#BCB4A4 100%)}
-    .shop-body{padding:16px 0 0;display:flex;flex-direction:column;flex:1}
-    .shop-brand{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:5px}
-    .shop-name{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:300;font-style:italic;color:var(--near-black);line-height:1.2;margin-bottom:6px;flex:1}
-    .shop-foot{display:flex;align-items:center;margin-top:12px;padding-top:12px;border-top:1px solid var(--border)}
-    .shop-price{font-size:12px;font-weight:300;color:var(--near-black);letter-spacing:.04em}
-    .sec-foot{display:flex;justify-content:center;margin-top:52px}
-    .final-cta{background:var(--near-black);padding:100px 80px;display:flex;flex-direction:column;align-items:center;text-align:center}
-    .final-eyebrow{font-size:9px;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);margin-bottom:22px}
-    .final-title{font-family:'Cormorant Garamond',serif;font-size:clamp(36px,5vw,60px);font-weight:300;font-style:italic;color:#fff;line-height:1.1;max-width:560px;margin-bottom:18px}
-    .final-sub{font-size:12px;font-weight:300;color:rgba(255,255,255,.45);letter-spacing:.04em;margin-bottom:44px}
-    .final-acts{display:flex;align-items:center;gap:28px;flex-wrap:wrap;justify-content:center;margin-bottom:28px}
-    .cta-si-d{color:rgba(255,255,255,.4)}
-    .cta-si-d::before{background:rgba(255,255,255,.3)}
-    .trust-strip{display:flex;align-items:center;gap:36px;padding-top:44px;border-top:1px solid rgba(255,255,255,.1);flex-wrap:wrap;justify-content:center;margin-top:44px}
-    .trust-item{display:flex;flex-direction:column;align-items:center;gap:5px}
-    .trust-val{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:300;color:#fff;line-height:1}
-    .trust-label{font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.4)}
-    .trust-div{width:1px;height:36px;background:rgba(255,255,255,.1)}
-    .footer{background:var(--near-black);border-top:1px solid rgba(255,255,255,.08);padding:64px 80px 40px}
-    .foot-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:64px;margin-bottom:64px}
-    .foot-logo{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:300;letter-spacing:.3em;text-transform:uppercase;color:#fff;margin-bottom:20px}
-    .foot-tag{font-size:12px;font-weight:300;line-height:1.75;color:rgba(255,255,255,.4);max-width:240px}
-    .foot-col-title{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:20px;display:block}
-    .foot-link{display:block;font-size:12px;font-weight:300;color:rgba(255,255,255,.55);letter-spacing:.06em;margin-bottom:12px;cursor:pointer;text-decoration:none}
-    .foot-link:hover{color:#fff}
-    .foot-ci{display:flex;flex-direction:column;gap:2px;margin-bottom:14px}
-    .foot-cl{font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.3)}
-    .foot-cv{font-size:12px;font-weight:300;color:rgba(255,255,255,.55)}
-    .foot-hr{display:flex;justify-content:space-between;font-size:11px;font-weight:300;color:rgba(255,255,255,.45);margin-bottom:8px}
-    .foot-bottom{padding-top:32px;border-top:1px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
-    .foot-legal{font-size:10px;letter-spacing:.08em;color:rgba(255,255,255,.25)}
-    .foot-ll{display:flex;gap:24px}
-    .foot-lla{font-size:10px;letter-spacing:.08em;color:rgba(255,255,255,.3);cursor:pointer;text-decoration:none}
-    .cqc-badge{display:flex;align-items:center;gap:8px;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.35)}
-    .cqc-icon{width:28px;height:28px;border:1px solid rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:10px;color:rgba(255,255,255,.4)}
-    @media(max-width:768px){
-      .hide-mobile{display:none}
-      .nav{height:56px}.nav-left{display:none}.nav-cell.shop,.nav-cell.book{display:none}
-      .nav-logo{font-size:17px;letter-spacing:.22em}
-      .nav-hamburger{display:flex}
-      .hero{grid-template-columns:1fr;grid-template-rows:auto 60vw;min-height:unset;max-height:unset}
-      .hero-content{grid-row:1;padding:40px 20px 44px}
-      .hero-title{font-size:clamp(38px,9vw,52px)}
-      .hero-img{grid-row:2;min-height:60vw}
-      .sec{padding:52px 20px}
-      .sec-header{flex-direction:column;align-items:flex-start;margin-bottom:32px}
-      .cta-banner{padding:28px 20px;flex-direction:column;align-items:flex-start;gap:20px}
-      .cta-actions{flex-direction:column;align-items:stretch;gap:12px;width:100%}
-      .btn-primary,.btn-wa{width:100%;justify-content:center;text-align:center}
-      .tx-grid{grid-template-columns:1fr 1fr;gap:16px 2px}
-      .why-grid{grid-template-columns:1fr}
-      .why-card{padding:32px 0;border-right:none;border-bottom:1px solid var(--border)}
-      .why-card:last-child{border-bottom:none}
-      .why-card:not(:first-child){padding-left:0}
-      .ba-grid{grid-template-columns:1fr;gap:24px}
-      .ba-slider{aspect-ratio:4/3}
-      .rev-card{min-width:calc(100vw - 40px);padding:24px 20px}
-      .shop-grid{grid-template-columns:1fr 1fr;gap:16px 2px}
-      .final-cta{padding:64px 20px}
-      .final-acts{flex-direction:column;align-items:stretch}
-      .btn-primary-white,.btn-wa-w{width:100%;justify-content:center;text-align:center}
-      .trust-strip{gap:16px;padding-top:32px}
-      .trust-div{display:none}
-      .footer{padding:52px 20px 32px}
-      .foot-grid{grid-template-columns:1fr 1fr;gap:40px}
-      .foot-bottom{flex-direction:column;align-items:flex-start}
-    }
-    @media(max-width:480px){
-      .sec{padding:40px 16px}.cta-banner{padding:24px 16px}.final-cta{padding:52px 16px}
-      .hero-content{padding:32px 16px 44px}.tx-grid{grid-template-columns:1fr}
-      .foot-grid{grid-template-columns:1fr;gap:32px}.footer{padding:44px 16px 28px}
-    }
-  </style>
-</head>
-<body>
+import { useState, useRef, useEffect } from "react";
 
-<!-- Announcement Bar -->
-<div class="announce-bar">
-  <span class="announce-item">Lorem ipsum dolor sit amet</span>
-  <span class="hide-mobile">
-    <span class="announce-sep">&nbsp;·&nbsp;</span>
-    <span class="announce-item">Consectetur adipiscing elit</span>
-    <span class="announce-sep">&nbsp;·&nbsp;</span>
-    <span class="announce-item">Lorem</span>
-  </span>
-</div>
+const FontLink = () => (
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400;1,500&family=Jost:wght@200;300;400&display=swap"
+    rel="stylesheet"
+  />
+);
 
-<!-- Nav -->
-<nav class="nav">
-  <div class="nav-left">
-    <a class="nav-cell">Treatments</a>
-    <a class="nav-cell">The Clinic</a>
-  </div>
-  <div class="nav-logo">D R &nbsp; R A S H A</div>
-  <div class="nav-right">
-    <a class="nav-cell shop">Shop</a>
-    <button class="nav-cell book">Book Consultation</button>
-    <div class="nav-cart">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
-    </div>
-    <button class="nav-hamburger" id="ham-btn">
-      <span class="ham-line" id="hl1"></span>
-      <span class="ham-line" id="hl2"></span>
-      <span class="ham-line" id="hl3"></span>
-    </button>
-  </div>
-</nav>
+const css = `
+  :root {
+    --near-black: #0A0A0A;
+    --cream: #F5F0E8;
+    --warm-bg: #EDE8DC;
+    --gold: #B8965A;
+    --white: #FFFFFF;
+    --mid-grey: #6B6560;
+    --border: rgba(10,10,10,0.12);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--cream);
+    color: var(--near-black);
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
 
-<!-- Mobile Menu -->
-<div class="mobile-menu" id="mobile-menu">
-  <div class="mobile-menu-item">Treatments<span>›</span></div>
-  <div class="mobile-menu-item">The Clinic<span>›</span></div>
-  <div class="mobile-menu-item">Shop<span>›</span></div>
-  <div class="mobile-menu-item">About Dr Rasha<span>›</span></div>
-  <div class="mobile-menu-item">Patient Results<span>›</span></div>
-  <button class="mobile-menu-book">Book Consultation</button>
-</div>
+  /* ── Hero ── */
+  .clinic-hero {
+    display: grid; grid-template-columns: 1fr 1fr;
+    min-height: 480px; max-height: 560px;
+  }
+  .clinic-hero-content {
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 64px 64px 64px 80px; background: var(--cream);
+  }
+  .clinic-hero-tag {
+    font-size: 9px; letter-spacing: 0.28em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 18px; display: block;
+  }
+  .clinic-hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(36px, 4.5vw, 64px); font-weight: 300; font-style: italic;
+    color: var(--near-black); line-height: 1.05; letter-spacing: -0.01em;
+    margin-bottom: 20px;
+  }
+  .clinic-hero-sub {
+    font-size: 13px; font-weight: 300; line-height: 1.8;
+    color: var(--mid-grey); max-width: 400px; letter-spacing: 0.02em;
+    margin-bottom: 32px;
+  }
+  .clinic-hero-pill {
+    display: inline-flex; align-items: center; gap: 8px;
+    border: 1px solid var(--border); padding: 8px 14px;
+    font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--mid-grey); margin-bottom: 20px; width: fit-content;
+  }
+  .clinic-hero-pill-dot {
+    width: 5px; height: 5px; border-radius: 50%; background: var(--gold);
+  }
+  .clinic-hero-image {
+    background: var(--warm-bg); overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .clinic-hero-image-inner {
+    width: 100%; height: 100%;
+    background: linear-gradient(155deg, #D8D0C2 0%, #B8A888 100%);
+    display: flex; align-items: center; justify-content: center;
+    flex-direction: column; gap: 10px;
+    color: rgba(10,10,10,0.25); font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase;
+  }
+  .clinic-hero-bullets {
+    display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px;
+  }
+  .clinic-hero-bullet {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 12px; font-weight: 300; color: var(--mid-grey); letter-spacing: 0.03em;
+  }
+  .clinic-hero-bullet::before {
+    content: ''; width: 4px; height: 4px; border-radius: 50%;
+    background: var(--gold); flex-shrink: 0;
+  }
+  .hero-social-proof {
+    display: flex; align-items: center; gap: 20px;
+    padding-bottom: 0; border-bottom: none;
+  }
+  .hero-proof-item { display: flex; align-items: center; gap: 8px; }
+  .hero-proof-stars { display: flex; gap: 2px; }
+  .hero-proof-star { color: var(--gold); font-size: 11px; }
+  .hero-proof-text { font-size: 11px; font-weight: 300; color: var(--mid-grey); letter-spacing: 0.06em; }
+  .hero-proof-text strong { color: var(--near-black); font-weight: 400; }
+  .hero-proof-divider { width: 1px; height: 20px; background: var(--border); }
+  .btn-primary {
+    background: var(--near-black); color: var(--white);
+    font-family: 'Jost', sans-serif; font-size: 10px; font-weight: 400;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    padding: 16px 36px; border: none; cursor: pointer; transition: background 0.2s;
+    width: fit-content;
+  }
+  .btn-primary:hover { background: #2a2a2a; }
+  .btn-whatsapp-dark {
+    background: transparent; color: var(--near-black);
+    font-family: 'Jost', sans-serif; font-size: 10px; font-weight: 300;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    padding: 16px 0; border: none; cursor: pointer;
+    border-bottom: 1px solid var(--near-black);
+    display: flex; align-items: center; gap: 8px;
+    transition: color 0.2s, border-color 0.2s; white-space: nowrap;
+  }
+  .btn-whatsapp-dark:hover { color: var(--gold); border-color: var(--gold); }
+  .btn-whatsapp-dark svg { width: 13px; height: 13px; fill: currentColor; flex-shrink: 0; }
 
-<!-- Hero -->
-<section class="hero">
-  <div class="hero-content">
-    <span class="hero-tag">Location</span>
-    <h1 class="hero-title">Lorem Ipsum<br>Dolor Sit<br>Amet</h1>
-    <p class="hero-sub">Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-    <div class="hero-bullets">
-      <div class="hero-bullet"><span class="hero-bullet-dot"></span>Lorem ipsum dolor sit amet</div>
-      <div class="hero-bullet"><span class="hero-bullet-dot"></span>Consectetur adipiscing elit</div>
-      <div class="tp-row">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="var(--gold)" style="flex-shrink:0"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 3.8 2.4-7.4L2 9.4h7.6z"/></svg>
-        <span style="font-size:11px;font-weight:400;color:var(--near-black);letter-spacing:.06em">Trustpilot</span>
-        <div class="tp-stars">
-          <span style="color:var(--gold);font-size:12px">★</span>
-          <span style="color:var(--gold);font-size:12px">★</span>
-          <span style="color:var(--gold);font-size:12px">★</span>
-          <span style="color:var(--gold);font-size:12px">★</span>
-          <span style="color:var(--gold);font-size:12px">★</span>
-        </div>
-        <span style="font-size:11px;font-weight:300;color:var(--mid-grey);letter-spacing:.04em">0.0 · 000 reviews</span>
+  /* ── Stat Strip ── */
+  .stat-strip {
+    background: var(--near-black);
+    display: grid; grid-template-columns: repeat(4, 1fr);
+  }
+  .stat-cell {
+    padding: 28px 40px; border-right: 1px solid rgba(255,255,255,0.08);
+    display: flex; flex-direction: column; gap: 6px;
+  }
+  .stat-cell:last-child { border-right: none; }
+  .stat-val {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 32px; font-weight: 300; color: var(--white); line-height: 1;
+  }
+  .stat-label { font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); }
+  .stat-note { font-size: 11px; font-weight: 300; color: rgba(255,255,255,0.38); letter-spacing: 0.02em; }
+
+  /* ── Sections ── */
+  .section { padding: 88px 80px; }
+  .section-alt { background: var(--warm-bg); }
+  .section-dark { background: var(--near-black); color: var(--white); }
+  .section-tag {
+    font-size: 9px; letter-spacing: 0.24em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 14px; display: block;
+  }
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(30px, 3.5vw, 48px); font-weight: 300; font-style: italic;
+    line-height: 1.1; color: inherit;
+  }
+
+  /* ── Philosophy ── */
+  .philosophy-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 80px;
+    align-items: center; margin-top: 56px;
+  }
+  .philosophy-body p {
+    font-size: 14px; font-weight: 300; line-height: 1.85;
+    color: var(--mid-grey); letter-spacing: 0.02em;
+  }
+  .philosophy-body p + p { margin-top: 20px; }
+  .philosophy-pull {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px; font-style: italic; font-weight: 300;
+    line-height: 1.45; color: var(--near-black);
+    border-left: 2px solid var(--gold); padding-left: 28px;
+    margin-top: 36px;
+  }
+  .philosophy-image-panel {
+    aspect-ratio: 4/5; background: var(--warm-bg);
+    position: relative; overflow: hidden;
+  }
+  .philosophy-image-inner {
+    width: 100%; height: 100%;
+    background: linear-gradient(155deg, #DDD6C8 0%, #C4B89A 100%);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .philosophy-award {
+    position: absolute; bottom: 28px; left: 28px;
+    background: var(--near-black); padding: 18px 22px;
+    display: flex; align-items: center; gap: 14px;
+    border-top: 2px solid var(--gold);
+  }
+  .philosophy-award-text { display: flex; flex-direction: column; gap: 3px; }
+  .philosophy-award-label {
+    font-size: 8px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold);
+  }
+  .philosophy-award-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 15px; font-weight: 300; font-style: italic; color: var(--white);
+  }
+
+  /* ── Dr Rasha Bio ── */
+  .bio-grid {
+    display: grid; grid-template-columns: 5fr 7fr; gap: 80px; align-items: start;
+  }
+  .bio-image {
+    aspect-ratio: 3/4; background: var(--warm-bg); position: relative; overflow: hidden;
+  }
+  .bio-image-inner {
+    width: 100%; height: 100%;
+    background: linear-gradient(170deg, #E0D8CC 0%, #C8BCA8 100%);
+    display: flex; align-items: flex-end; justify-content: flex-start; padding: 24px;
+  }
+  .bio-image-caption {
+    font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase;
+    color: rgba(10,10,10,0.4);
+  }
+  .bio-content { padding-top: 8px; }
+  .bio-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(32px, 3vw, 48px); font-weight: 300; font-style: italic;
+    color: var(--near-black); line-height: 1.05; margin-bottom: 6px;
+  }
+  .bio-title {
+    font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold);
+    margin-bottom: 28px; display: block;
+  }
+  .bio-body p {
+    font-size: 14px; font-weight: 300; line-height: 1.85;
+    color: var(--mid-grey); letter-spacing: 0.02em;
+  }
+  .bio-body p + p { margin-top: 20px; }
+  .bio-credentials {
+    margin-top: 36px; padding-top: 28px; border-top: 1px solid var(--border);
+    display: flex; flex-wrap: wrap; gap: 8px;
+  }
+  .credential-tag {
+    font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--near-black); padding: 7px 12px; border: 1px solid var(--border);
+  }
+  .bio-signature {
+    margin-top: 28px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 36px; font-weight: 300; font-style: italic;
+    color: var(--near-black); letter-spacing: 0.02em; line-height: 1;
+  }
+
+  /* ── Values / Approach ── */
+  .values-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 0; margin-top: 44px; border-top: 1px solid rgba(255,255,255,0.1);
+  }
+  .value-card {
+    padding: 36px 48px 36px 0;
+    border-right: 1px solid rgba(255,255,255,0.1);
+    display: flex; flex-direction: column; gap: 14px;
+  }
+  .value-card:last-child { border-right: none; padding-right: 0; }
+  .value-card:not(:first-child) { padding-left: 48px; }
+  .value-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 48px; font-weight: 300; line-height: 1;
+    color: rgba(255,255,255,0.2); letter-spacing: -0.02em;
+  }
+  .value-title {
+    font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--white);
+  }
+  .value-body {
+    font-size: 13px; font-weight: 300; line-height: 1.75;
+    color: rgba(255,255,255,0.48); letter-spacing: 0.02em;
+  }
+
+  /* ── Clinic Space ── */
+  .space-intro {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 80px;
+    align-items: end; margin-bottom: 52px;
+  }
+  .space-body p {
+    font-size: 14px; font-weight: 300; line-height: 1.85;
+    color: var(--mid-grey); letter-spacing: 0.02em;
+  }
+  .space-carousel-wrapper { overflow: hidden; }
+  .space-carousel {
+    display: flex; gap: 2px;
+    transition: transform 0.5s cubic-bezier(0.25,0.46,0.45,0.94);
+    will-change: transform;
+  }
+  .space-carousel-card { flex-shrink: 0; width: calc(33.333% - 2px); }
+  .space-carousel-img {
+    aspect-ratio: 4/3; position: relative;
+    display: flex; align-items: flex-end; padding: 14px;
+  }
+  .spc-1 { background: linear-gradient(155deg, #DDD6C8 0%, #B8A888 100%); }
+  .spc-2 { background: linear-gradient(155deg, #D8D0C2 0%, #C4B89A 100%); }
+  .spc-3 { background: linear-gradient(155deg, #D4CCC0 0%, #C0B8A6 100%); }
+  .spc-4 { background: linear-gradient(155deg, #CCC4B8 0%, #BCB09A 100%); }
+  .space-carousel-label {
+    font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: rgba(10,10,10,0.3);
+  }
+  .space-carousel-controls {
+    display: flex; align-items: center; gap: 14px; margin-top: 20px;
+    justify-content: flex-end;
+  }
+
+  /* ── CQC / Certifications ── */
+  .certs-strip {
+    border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    background: var(--cream);
+  }
+  .cert-cell {
+    padding: 32px 40px; border-right: 1px solid var(--border);
+    display: flex; flex-direction: column; gap: 6px; align-items: flex-start;
+  }
+  .cert-cell:last-child { border-right: none; }
+  .cert-icon {
+    width: 36px; height: 36px; border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 8px;
+  }
+  .cert-icon svg { width: 18px; height: 18px; stroke: var(--gold); fill: none; stroke-width: 1.25; }
+  .cert-title {
+    font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--near-black);
+  }
+  .cert-note { font-size: 12px; font-weight: 300; color: var(--mid-grey); line-height: 1.6; }
+
+  /* ── Visit / Location ── */
+  .visit-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+  .visit-info { padding: 72px 80px; background: var(--near-black); }
+  .visit-map {
+    background: var(--warm-bg); position: relative; overflow: hidden;
+    min-height: 400px;
+  }
+  .visit-map-inner {
+    width: 100%; height: 100%;
+    background: linear-gradient(145deg, #D8D4CC 0%, #C4C0B8 100%);
+    display: flex; align-items: center; justify-content: center;
+    flex-direction: column; gap: 10px;
+    color: rgba(10,10,10,0.3); font-size: 11px; letter-spacing: 0.14em;
+    text-transform: uppercase; position: absolute; inset: 0;
+  }
+  .visit-tag { font-size: 9px; letter-spacing: 0.24em; text-transform: uppercase; color: var(--gold); margin-bottom: 14px; display: block; }
+  .visit-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(28px, 3vw, 44px); font-weight: 300; font-style: italic;
+    color: var(--white); line-height: 1.1; margin-bottom: 36px;
+  }
+  .visit-detail { display: flex; flex-direction: column; gap: 24px; }
+  .visit-item { display: flex; gap: 20px; align-items: flex-start; }
+  .visit-item-label {
+    font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--gold); flex-shrink: 0; width: 80px; padding-top: 2px;
+  }
+  .visit-item-value {
+    font-size: 13px; font-weight: 300; line-height: 1.7;
+    color: rgba(255,255,255,0.65); letter-spacing: 0.02em;
+  }
+  .visit-item-value strong { color: var(--white); font-weight: 400; display: block; }
+  .visit-hours { display: flex; flex-direction: column; gap: 6px; }
+  .visit-hour-row { display: flex; justify-content: space-between; gap: 20px; }
+  .visit-hour-day { font-size: 11px; font-weight: 300; color: rgba(255,255,255,0.45); letter-spacing: 0.06em; }
+  .visit-hour-time { font-size: 11px; font-weight: 300; color: rgba(255,255,255,0.65); letter-spacing: 0.06em; }
+  .visit-divider { height: 1px; background: rgba(255,255,255,0.1); margin: 8px 0; }
+  .visit-cta { margin-top: 40px; }
+  .btn-gold {
+    background: var(--gold); color: var(--white);
+    font-family: 'Jost', sans-serif; font-size: 10px; font-weight: 400;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    padding: 16px 36px; border: none; cursor: pointer; transition: background 0.2s;
+  }
+  .btn-gold:hover { background: #A8864A; }
+
+  /* ── Accordion ── */
+  .acc-list { margin-top: 0; }
+  .acc-item { border-bottom: 1px solid var(--border); }
+  .acc-trigger {
+    width: 100%; padding: 22px 0;
+    display: flex; align-items: center; justify-content: space-between;
+    background: none; border: none; cursor: pointer; text-align: left;
+    font-family: 'Jost', sans-serif; gap: 16px;
+  }
+  .acc-title { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--near-black); }
+  .acc-icon { font-size: 22px; font-weight: 200; color: var(--gold); flex-shrink: 0; transition: transform 0.3s; }
+  .acc-icon.open { transform: rotate(45deg); }
+  .acc-body { overflow: hidden; max-height: 0; opacity: 0; transition: max-height 0.4s ease, opacity 0.3s; }
+  .acc-body.open { max-height: 400px; opacity: 1; }
+  .acc-content { padding: 4px 0 22px; font-size: 13px; font-weight: 300; line-height: 1.8; color: var(--mid-grey); }
+
+  /* ── Announcement Bar ── */
+  .announce-bar {
+    background: var(--near-black); color: var(--white);
+    font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
+    display: flex; align-items: center; justify-content: center;
+    height: 36px; overflow: hidden; white-space: nowrap;
+  }
+  .announce-item { padding: 0 16px; }
+  .announce-sep { opacity: 0.3; }
+  .hide-mobile { display: flex; align-items: center; }
+
+  /* ── Nav ── */
+  .nav {
+    background: var(--cream); border-bottom: 1px solid var(--border);
+    display: flex; align-items: stretch; height: 64px;
+    position: sticky; top: 0; z-index: 200;
+  }
+  .nav-left { display: flex; align-items: stretch; }
+  .nav-cell {
+    display: flex; align-items: center; padding: 0 28px;
+    border-right: 1px solid var(--border);
+    font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+    cursor: pointer; color: var(--near-black); text-decoration: none;
+    white-space: nowrap; background: none;
+    border-top: none; border-bottom: none; border-left: none;
+    font-family: 'Jost', sans-serif;
+  }
+  .nav-cell.active { border-bottom: 1px solid var(--gold) !important; }
+  .nav-logo {
+    flex: 1; display: flex; align-items: center; justify-content: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px; font-weight: 300; letter-spacing: 0.3em; text-transform: uppercase;
+  }
+  .nav-right { display: flex; align-items: stretch; margin-left: auto; }
+  .nav-cell.shop { border-left: 1px solid var(--border); border-right: none; }
+  .nav-cell.book {
+    background: var(--near-black); color: var(--white);
+    padding: 0 28px; font-size: 10px; letter-spacing: 0.2em; border: none;
+  }
+  .nav-cart {
+    display: flex; align-items: center; padding: 0 18px;
+    border-left: 1px solid var(--border); cursor: pointer; position: relative;
+  }
+  .cart-badge {
+    position: absolute; top: 14px; right: 10px;
+    background: var(--gold); color: var(--white);
+    font-size: 9px; width: 14px; height: 14px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Jost', sans-serif;
+  }
+  .nav-hamburger {
+    display: none; align-items: center; justify-content: center;
+    padding: 0 20px; border-left: 1px solid var(--border);
+    cursor: pointer; background: none;
+    border-top: none; border-right: none; border-bottom: none;
+    flex-direction: column; gap: 5px;
+  }
+  .ham-line {
+    width: 22px; height: 1px; background: var(--near-black);
+    transition: transform 0.25s, opacity 0.25s; display: block;
+  }
+  .mobile-menu {
+    position: fixed; inset: 0; top: 100px; background: var(--cream);
+    z-index: 190; display: flex; flex-direction: column;
+    padding: 40px 28px; transform: translateX(100%);
+    transition: transform 0.35s cubic-bezier(0.25,0.46,0.45,0.94);
+    border-top: 1px solid var(--border);
+  }
+  .mobile-menu.open { transform: translateX(0); }
+  .mobile-menu-item {
+    font-size: 13px; letter-spacing: 0.16em; text-transform: uppercase;
+    padding: 22px 0; border-bottom: 1px solid var(--border);
+    color: var(--near-black); cursor: pointer;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .mobile-menu-item span { color: var(--mid-grey); font-size: 18px; }
+  .mobile-menu-book {
+    margin-top: 32px; background: var(--near-black); color: var(--white);
+    font-family: 'Jost', sans-serif; font-size: 10px; letter-spacing: 0.2em;
+    text-transform: uppercase; padding: 18px 32px; border: none; cursor: pointer; width: 100%;
+  }
+
+  /* ── Breadcrumb ── */
+  .breadcrumb {
+    background: var(--cream); border-bottom: 1px solid var(--border);
+    padding: 12px 80px; display: flex; align-items: center; gap: 8px;
+  }
+  .breadcrumb-item {
+    font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--mid-grey); font-weight: 300; cursor: pointer;
+    text-decoration: none; transition: color 0.2s; white-space: nowrap;
+  }
+  .breadcrumb-item:hover { color: var(--near-black); }
+  .breadcrumb-item.current { color: var(--near-black); cursor: default; }
+
+  /* ── Philosophy Condensed ── */
+  .philosophy-condensed {
+    display: grid; grid-template-columns: 1fr 2fr; gap: 80px;
+    align-items: start; margin-top: 28px;
+  }
+  .philosophy-condensed-body {
+    font-size: 14px; font-weight: 300; line-height: 1.85;
+    color: var(--mid-grey); letter-spacing: 0.02em; margin-bottom: 24px;
+  }
+  .philosophy-pull-inline {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px; font-style: italic; font-weight: 300;
+    line-height: 1.45; color: var(--near-black);
+    border-left: 2px solid var(--gold); padding-left: 20px;
+    margin-bottom: 24px; display: block;
+  }
+  .philosophy-award-inline {
+    display: flex; align-items: center; gap: 10px;
+    padding-top: 20px; border-top: 1px solid var(--border);
+  }
+  .philosophy-award-inline-text {
+    font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--mid-grey);
+  }
+
+  /* ── Team Carousel ── */
+  .team-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px; font-weight: 300; font-style: italic; color: var(--near-black); margin-bottom: 4px;
+  }
+  .team-role { font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; display: block; }
+  .team-bio { font-size: 13px; font-weight: 300; line-height: 1.75; color: var(--mid-grey); margin-bottom: 14px; }
+  .team-creds { display: flex; flex-wrap: wrap; gap: 6px; }
+  .team-cred {
+    font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--near-black); padding: 5px 10px; border: 1px solid var(--border);
+  }
+  .team-nav {
+    width: 44px; height: 44px; border: 1px solid var(--border);
+    background: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; color: var(--near-black); transition: background 0.2s, color 0.2s;
+  }
+  .team-nav:hover { background: var(--near-black); color: var(--white); }
+  .team-nav:disabled { opacity: 0.3; cursor: default; }
+
+  /* ── Safety FAQ ── */
+  .safety-layout { display: grid; grid-template-columns: 1fr 2fr; gap: 80px; align-items: start; }
+
+  /* ── Final CTA ── */
+  .final-cta {
+    background: var(--near-black); padding: 100px 80px;
+    display: flex; flex-direction: column; align-items: center; text-align: center;
+  }
+  .final-cta-eyebrow { font-size: 9px; letter-spacing: 0.28em; text-transform: uppercase; color: var(--gold); margin-bottom: 22px; }
+  .final-cta-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(36px, 5vw, 60px); font-weight: 300; font-style: italic;
+    color: var(--white); line-height: 1.1; max-width: 560px; margin-bottom: 16px;
+  }
+  .final-cta-sub { font-size: 12px; font-weight: 300; color: rgba(255,255,255,0.4); letter-spacing: 0.04em; margin-bottom: 44px; }
+  .cta-actions { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; justify-content: center; }
+  .btn-primary-white {
+    background: var(--white); color: var(--near-black);
+    font-family: 'Jost', sans-serif; font-size: 10px; font-weight: 400;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    padding: 18px 52px; border: none; cursor: pointer; transition: background 0.2s;
+  }
+  .btn-primary-white:hover { background: var(--cream); }
+  .btn-outline-white {
+    background: transparent; color: var(--white);
+    font-family: 'Jost', sans-serif; font-size: 10px; font-weight: 300;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    padding: 17px 36px; border: 1px solid rgba(255,255,255,0.3);
+    cursor: pointer; transition: border-color 0.2s, color 0.2s;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .btn-outline-white:hover { border-color: var(--gold); color: var(--gold); }
+  .btn-outline-white svg { width: 13px; height: 13px; fill: currentColor; }
+
+  @media (max-width: 1024px) {
+    .philosophy-condensed { gap: 48px; }
+  }
+
+  @media (max-width: 768px) {
+    .announce-bar { height: 32px; font-size: 9px; }
+    .hide-mobile { display: none; }
+    .nav { height: 56px; }
+    .nav-left { display: none; }
+    .nav-cell.shop, .nav-cell.book { display: none; }
+    .nav-logo { font-size: 17px; letter-spacing: 0.22em; }
+    .nav-hamburger { display: flex; }
+    .breadcrumb { padding: 10px 20px; }
+    .section { padding: 52px 20px; }
+    .clinic-hero { grid-template-columns: 1fr; min-height: unset; max-height: unset; }
+    .clinic-hero-content { padding: 40px 20px; }
+    .clinic-hero-image { min-height: 56vw; }
+    .clinic-hero-title { font-size: clamp(32px, 8vw, 44px); }
+    .clinic-hero-sub { font-size: 13px; max-width: 100%; }
+    .clinic-hero-bullets { grid-template-columns: 1fr; gap: 8px; }
+    .btn-primary { width: 100%; text-align: center; }
+
+    .stat-strip { grid-template-columns: 1fr 1fr; }
+    .stat-cell { padding: 20px 16px; border-bottom: 1px solid rgba(255,255,255,0.08); }
+    .stat-cell:nth-child(2) { border-right: none; }
+    .stat-cell:nth-child(4) { border-right: none; border-bottom: none; }
+    .stat-cell:nth-child(3) { border-bottom: none; }
+    .stat-val { font-size: 26px; }
+
+    .philosophy-condensed { grid-template-columns: 1fr; gap: 24px; margin-top: 20px; }
+    .philosophy-pull-inline { font-size: 19px; }
+
+    .values-grid { grid-template-columns: 1fr; margin-top: 28px; }
+    .value-card { padding: 28px 0; border-right: none !important; border-bottom: 1px solid rgba(255,255,255,0.1); }
+    .value-card:last-child { border-bottom: none; }
+    .value-card:not(:first-child) { padding-left: 0; }
+
+    .space-intro { grid-template-columns: 1fr; gap: 32px; margin-bottom: 32px; }
+    .space-carousel-card { width: calc(50% - 2px); }
+    .space-carousel-img { aspect-ratio: 4/3; }
+
+    .certs-strip { grid-template-columns: 1fr 1fr; }
+    .cert-cell { padding: 24px 20px; border-bottom: 1px solid var(--border); }
+    .cert-cell:nth-child(2) { border-right: none; }
+    .cert-cell:nth-child(3) { border-bottom: none; }
+    .cert-cell:nth-child(4) { border-right: none; border-bottom: none; }
+
+    .visit-grid { grid-template-columns: 1fr; }
+    .visit-info { padding: 52px 20px; }
+    .visit-map { min-height: 300px; }
+
+    .safety-layout { grid-template-columns: 1fr; gap: 32px; }
+
+    .final-cta { padding: 64px 20px; }
+    .final-cta-title { font-size: clamp(30px, 8vw, 44px); }
+    .btn-primary-white { width: 100%; text-align: center; }
+    .btn-outline-white { width: 100%; justify-content: center; }
+    .cta-actions { flex-direction: column; align-items: stretch; width: 100%; }
+  }
+
+  @media (max-width: 480px) {
+    .section { padding: 40px 16px; }
+    .clinic-hero-content { padding: 32px 16px 40px; }
+    .visit-info { padding: 44px 16px; }
+    .final-cta { padding: 52px 16px; }
+    .stat-cell { padding: 18px 14px; }
+  }
+`;
+
+function AccItem({ title, body }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="acc-item">
+      <button className="acc-trigger" onClick={() => setOpen(!open)}>
+        <span className="acc-title">{title}</span>
+        <span className={`acc-icon ${open ? "open" : ""}`}>+</span>
+      </button>
+      <div className={`acc-body ${open ? "open" : ""}`}>
+        <div className="acc-content">{body}</div>
       </div>
     </div>
-    <div class="hero-actions">
-      <button class="btn-primary">Book Consultation</button>
-      <button class="btn-wa"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>WhatsApp Us</button>
-    </div>
-  </div>
-  <div class="hero-img"><div class="hero-img-ph"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="rgba(10,10,10,0.2)" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><span>Hero Image</span></div></div>
-</section>
+  );
+}
 
-<!-- Trust Bar -->
-<div class="trust-bar" id="trust-bar"></div>
+const WA_ICON = () => (
+  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+  </svg>
+);
 
-<!-- Treatments -->
-<section class="sec">
-  <div class="sec-header">
-    <div><span class="sec-tag">Treatments</span><h2 class="sec-title">Lorem ipsum</h2></div>
-  </div>
-  <div class="tx-grid" id="tx-grid"></div>
-</section>
+const SAFETY_FAQS = [
+  {
+    title: "Who performs treatments at Dr Rasha Clinic?",
+    body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud.",
+  },
+  {
+    title: "Are you regulated by the CQC?",
+    body: "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit.",
+  },
+  {
+    title: "What products do you use?",
+    body: "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident sunt in culpa.",
+  },
+  {
+    title: "How do you handle adverse events?",
+    body: "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit.",
+  },
+  {
+    title: "Do you offer cooling-off periods?",
+    body: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.",
+  },
+];
 
-<!-- Why Us -->
-<section class="sec sec-alt">
-  <div class="sec-header">
-    <div><span class="sec-tag">Why Us</span><h2 class="sec-title">Lorem ipsum dolor</h2></div>
-  </div>
-  <div class="why-grid" id="why-grid"></div>
-</section>
+const TEAM = [
+  { name: "Dr Rasha Hilal", role: "Founder & Lead Clinician", bio: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua enim.", creds: ["GMC Registered", "MBBS", "BCAM"], grad: "linear-gradient(175deg, #E4DDD0 0%, #CCC0A8 100%)" },
+  { name: "Dr [Name]", role: "Aesthetic Physician", bio: "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute.", creds: ["GMC Registered", "MBBS"], grad: "linear-gradient(175deg, #DDD6C8 0%, #C4B89A 100%)" },
+  { name: "Dr [Name]", role: "Aesthetic Physician", bio: "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur excepteur sint.", creds: ["GMC Registered", "MBBS"], grad: "linear-gradient(175deg, #D8D0C2 0%, #BCB09A 100%)" },
+  { name: "Dr [Name]", role: "Aesthetic Nurse Practitioner", bio: "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum perspiciatis.", creds: ["NMC Registered", "Independent Prescriber"], grad: "linear-gradient(175deg, #D4CCC0 0%, #B8AC96 100%)" },
+  { name: "Dr [Name]", role: "Skin & Laser Specialist", bio: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed quia consequuntur magni dolores ratione.", creds: ["GMC Registered", "MBBS"], grad: "linear-gradient(175deg, #D0C8BC 0%, #B4A890 100%)" },
+];
 
-<!-- Reviews -->
-<section class="sec sec-alt">
-  <div class="sec-header">
-    <div><span class="sec-tag">Testimonials</span><h2 class="sec-title">Lorem ipsum</h2></div>
-    <div style="display:flex;align-items:center;gap:8px;flex-shrink:0">
-      <span style="color:var(--gold);font-size:12px">★★★★★</span>
-      <span style="font-size:11px;letter-spacing:.1em;color:var(--mid-grey);text-transform:uppercase;white-space:nowrap">0.0 · 000</span>
-    </div>
-  </div>
-  <div class="rev-wrap"><div class="rev-track" id="rev-track"></div></div>
-  <div class="rev-ctrl">
-    <button class="rev-nav" id="rev-prev">←</button>
-    <button class="rev-nav" id="rev-next">→</button>
-    <div class="rev-dots" id="rev-dots"></div>
-  </div>
-</section>
+function TeamCarousel() {
+  const [idx, setIdx] = useState(0);
+  const [width, setWidth] = useState(typeof window !== "undefined" ? window.innerWidth : 1200);
+  useEffect(() => {
+    const onResize = () => setWidth(window.innerWidth);
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
+  const visible = width <= 640 ? 1 : width <= 1024 ? 2 : 3;
+  const max = Math.max(0, TEAM.length - visible);
+  const cardPct = 100 / visible;
 
-<!-- CTA Banner -->
-<div class="cta-banner">
-  <div>
-    <p class="cta-banner-text">Lorem ipsum dolor sit amet.</p>
-    <p class="cta-banner-sub">Consectetur adipiscing elit sed do eiusmod tempor.</p>
-    <div class="cta-safety">
-      <span class="cta-si">Lorem</span><span class="cta-si">Ipsum</span><span class="cta-si">Dolor</span>
-    </div>
-  </div>
-  <div class="cta-actions">
-    <button class="btn-primary">Book Consultation</button>
-    <button class="btn-wa"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>WhatsApp Us</button>
-  </div>
-</div>
-
-<!-- Before & After -->
-<section class="sec sec-alt">
-  <div class="sec-header"><div><span class="sec-tag">Results</span><h2 class="sec-title">Before &amp; After</h2></div></div>
-  <div class="ba-grid" id="ba-grid"></div>
-</section>
-
-<!-- Shop -->
-<section class="sec">
-  <div class="sec-header"><div><span class="sec-tag">Shop</span><h2 class="sec-title">Lorem ipsum</h2></div></div>
-  <p style="font-size:14px;font-weight:300;line-height:1.85;color:var(--mid-grey);letter-spacing:.02em;max-width:560px;margin-bottom:52px">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco.</p>
-  <div class="shop-grid" id="shop-grid"></div>
-  <div class="sec-foot"><button class="btn-primary">Lorem ipsum</button></div>
-</section>
-
-<!-- Final CTA -->
-<section class="final-cta">
-  <p class="final-eyebrow">Lorem</p>
-  <h2 class="final-title">Lorem ipsum dolor sit</h2>
-  <p class="final-sub">Consectetur · Adipiscing · Elit</p>
-  <div class="final-acts">
-    <button class="btn-primary-white">Book Consultation</button>
-    <button class="btn-wa-w"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>WhatsApp Us</button>
-  </div>
-  <div class="cta-safety" style="justify-content:center;margin-bottom:0">
-    <span class="cta-si cta-si-d">Lorem</span><span class="cta-si cta-si-d">Ipsum</span><span class="cta-si cta-si-d">Dolor</span>
-  </div>
-  <div class="trust-strip">
-    <div class="trust-item"><span class="trust-val">000+</span><span class="trust-label">Lorem</span></div>
-    <div class="trust-div"></div>
-    <div class="trust-item"><span class="trust-val">0.0★</span><span class="trust-label">Ipsum</span></div>
-    <div class="trust-div"></div>
-    <div class="trust-item"><span class="trust-val">ABC</span><span class="trust-label">Dolor</span></div>
-    <div class="trust-div"></div>
-    <div class="trust-item"><span class="trust-val">0000</span><span class="trust-label">Amet</span></div>
-  </div>
-</section>
-
-<!-- Footer -->
-<footer class="footer">
-  <div class="foot-grid">
+  return (
     <div>
-      <div class="foot-logo">D R &nbsp; R A S H A</div>
-      <p class="foot-tag">Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod.</p>
+      <div style={{ overflow: "hidden" }}>
+        <div style={{ display: "flex", gap: 2, transition: "transform 0.5s cubic-bezier(0.25,0.46,0.45,0.94)", transform: `translateX(calc(-${idx * cardPct}% - ${idx * 2}px))` }}>
+          {TEAM.map((p, i) => (
+            <div key={i} style={{ minWidth: `calc(${cardPct}% - ${visible > 1 ? 2 : 0}px)`, flexShrink: 0, display: "flex", flexDirection: "column" }}>
+              <div style={{ aspectRatio: "3/2", background: p.grad, position: "relative", overflow: "hidden" }}>
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="rgba(10,10,10,0.15)" strokeWidth="1" style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%,-50%)" }}>
+                  <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+                </svg>
+              </div>
+              <div style={{ paddingTop: 14, paddingBottom: 4 }}>
+                <h3 className="team-name" style={{ fontSize: 18 }}>{p.name}</h3>
+                <span className="team-role">{p.role}</span>
+                <div className="team-creds">
+                  {p.creds.map(c => <span key={c} className="team-cred">{c}</span>)}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div style={{ display: "flex", alignItems: "center", gap: 14, marginTop: 20 }}>
+        <button className="team-nav" onClick={() => setIdx(i => Math.max(0, i - 1))} disabled={idx === 0}>←</button>
+        <button className="team-nav" onClick={() => setIdx(i => Math.min(max, i + 1))} disabled={idx >= max}>→</button>
+        <div style={{ display: "flex", gap: 6, marginLeft: 8 }}>
+          {Array.from({ length: max + 1 }).map((_, i) => (
+            <div key={i} onClick={() => setIdx(i)} style={{ width: 5, height: 5, borderRadius: "50%", background: i === idx ? "var(--near-black)" : "var(--border)", cursor: "pointer", transition: "background 0.2s" }} />
+          ))}
+        </div>
+      </div>
     </div>
+  );
+}
+
+const CLINIC_REVIEWS = [
+  { stars: 5, text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam.", author: "Sarah M.", detail: "Anti-Wrinkle · Verified Patient" },
+  { stars: 5, text: "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure dolor reprehenderit.", author: "Claire H.", detail: "Dermal Filler · Verified Patient" },
+  { stars: 5, text: "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat non proident.", author: "Rebecca T.", detail: "Skin Consultation · Verified Patient" },
+  { stars: 5, text: "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum sed perspiciatis unde omnis iste.", author: "Natalie W.", detail: "Anti-Wrinkle · Verified Patient" },
+];
+
+function ClinicReviews() {
+  const [idx, setIdx] = useState(0);
+  const [width, setWidth] = useState(typeof window !== "undefined" ? window.innerWidth : 1200);
+  useEffect(() => {
+    const fn = () => setWidth(window.innerWidth);
+    window.addEventListener("resize", fn);
+    return () => window.removeEventListener("resize", fn);
+  }, []);
+  const visible = width <= 768 ? 1 : 3;
+  const max = Math.max(0, CLINIC_REVIEWS.length - visible);
+  const pct = 100 / visible;
+  return (
     <div>
-      <span class="foot-col-title">Navigation</span>
-      <a class="foot-link">Lorem</a><a class="foot-link">Ipsum</a><a class="foot-link">Dolor</a><a class="foot-link">Amet</a><a class="foot-link">Consectetur</a><a class="foot-link">Adipiscing</a>
+      <div style={{ overflow:"hidden" }}>
+        <div style={{ display:"flex", gap:24, transition:"transform 0.5s cubic-bezier(0.25,0.46,0.45,0.94)", transform:`translateX(calc(-${idx * pct}% - ${idx * 24}px))` }}>
+          {CLINIC_REVIEWS.map((r, i) => (
+            <div key={i} style={{ minWidth:`calc(${pct}% - ${visible > 1 ? 16 : 0}px)`, flexShrink:0, border:"1px solid var(--border)", padding:"32px 28px", background:"var(--cream)", display:"flex", flexDirection:"column", gap:16 }}>
+              <div style={{ display:"flex", gap:3 }}>
+                {Array.from({ length: r.stars }).map((_, j) => <span key={j} style={{ color:"var(--gold)", fontSize:11 }}>★</span>)}
+              </div>
+              <p style={{ fontFamily:"'Cormorant Garamond', serif", fontSize:17, fontStyle:"italic", fontWeight:300, lineHeight:1.65, color:"var(--near-black)", flex:1 }}>"{r.text}"</p>
+              <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", paddingTop:16, borderTop:"1px solid var(--border)" }}>
+                <span style={{ fontSize:10, letterSpacing:"0.16em", textTransform:"uppercase", color:"var(--near-black)" }}>{r.author}</span>
+                <span style={{ fontSize:9, letterSpacing:"0.12em", textTransform:"uppercase", color:"var(--gold)" }}>{r.detail}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div style={{ display:"flex", alignItems:"center", gap:14, marginTop:28 }}>
+        <button className="team-nav" onClick={() => setIdx(i => Math.max(0, i - 1))} disabled={idx === 0}>←</button>
+        <button className="team-nav" onClick={() => setIdx(i => Math.min(max, i + 1))} disabled={idx >= max}>→</button>
+        <div style={{ display:"flex", gap:6, marginLeft:8 }}>
+          {Array.from({ length: max + 1 }).map((_, i) => (
+            <div key={i} onClick={() => setIdx(i)} style={{ width:5, height:5, borderRadius:"50%", background: i === idx ? "var(--near-black)" : "var(--border)", cursor:"pointer", transition:"background 0.2s" }} />
+          ))}
+        </div>
+      </div>
     </div>
-    <div>
-      <span class="foot-col-title">Contact</span>
-      <div class="foot-ci"><span class="foot-cl">Phone</span><span class="foot-cv">000 000 0000</span></div>
-      <div class="foot-ci"><span class="foot-cl">WhatsApp</span><span class="foot-cv">00000 000000</span></div>
-      <div class="foot-ci"><span class="foot-cl">Email</span><span class="foot-cv">lorem@ipsum.com</span></div>
-      <div class="foot-ci"><span class="foot-cl">Address</span><span class="foot-cv">000 Lorem Road, XX0 0XX</span></div>
+  );
+}
+
+function SpaceCarouselControls() {
+  const [idx, setIdx] = useState(0);
+  const total = 6;
+  const visible = typeof window !== "undefined" && window.innerWidth <= 640 ? 1 : typeof window !== "undefined" && window.innerWidth <= 1024 ? 2 : 3;
+  const max = total - visible;
+  const cardW = 100 / visible;
+
+  useEffect(() => {
+    const el = document.getElementById("space-carousel");
+    if (el) el.style.transform = `translateX(calc(-${idx * cardW}% - ${idx * 2}px))`;
+  }, [idx, cardW]);
+
+  return (
+    <div className="space-carousel-controls">
+      <button className="team-nav" onClick={() => setIdx(i => Math.max(0, i - 1))} disabled={idx === 0}>←</button>
+      <button className="team-nav" onClick={() => setIdx(i => Math.min(max, i + 1))} disabled={idx >= max}>→</button>
+      <div style={{ display: "flex", gap: 6, marginLeft: 8 }}>
+        {Array.from({ length: max + 1 }).map((_, i) => (
+          <div key={i} onClick={() => setIdx(i)} style={{ width: 5, height: 5, borderRadius: "50%", background: i === idx ? "var(--near-black)" : "var(--border)", cursor: "pointer", transition: "background 0.2s" }} />
+        ))}
+      </div>
     </div>
-    <div>
-      <span class="foot-col-title">Hours</span>
-      <div class="foot-hr"><span>Monday – Friday</span><span>00am – 00pm</span></div>
-      <div class="foot-hr"><span>Saturday</span><span>00am – 00pm</span></div>
-      <div class="foot-hr"><span>Sunday</span><span>00am – 00pm</span></div>
-    </div>
-  </div>
-  <div class="foot-bottom">
-    <span class="foot-legal">© 0000 Lorem Ipsum. All Rights Reserved.</span>
-    <div class="foot-ll"><a class="foot-lla">Lorem</a><a class="foot-lla">Ipsum</a><a class="foot-lla">Dolor</a></div>
-    <div class="cqc-badge"><div class="cqc-icon">ABC</div><span>Lorem Ipsum</span></div>
-  </div>
-</footer>
+  );
+}
 
-<script>
-// Mobile menu
-const hamBtn=document.getElementById('ham-btn');
-const mobileMenu=document.getElementById('mobile-menu');
-const hl1=document.getElementById('hl1'),hl2=document.getElementById('hl2'),hl3=document.getElementById('hl3');
-let menuOpen=false;
-hamBtn.onclick=()=>{menuOpen=!menuOpen;mobileMenu.classList.toggle('open',menuOpen);hl1.style.transform=menuOpen?'translateY(6px) rotate(45deg)':'';hl2.style.opacity=menuOpen?'0':'1';hl3.style.transform=menuOpen?'translateY(-6px) rotate(-45deg)':''};
+export default function ClinicPage() {
+  const [menuOpen, setMenuOpen] = useState(false);
 
-// Trust bar
-const TRUST=[{icon:'★',label:'Lorem',sub:'0.0 · 000'},{icon:'◇',label:'Ipsum',sub:'Award 0000'},{icon:'✦',label:'Dolor',sub:'Sit amet'},{icon:'◈',label:'Consectetur',sub:'Adipiscing'}];
-const tbar=document.getElementById('trust-bar');
-TRUST.forEach(t=>{const d=document.createElement('div');d.className='tbc';d.innerHTML=`<span style="font-size:14px;color:var(--gold)">${t.icon}</span><div><div class="tbc-label">${t.label}</div><div class="tbc-sub">${t.sub}</div></div>`;tbar.appendChild(d)});
+  return (
+    <>
+      <FontLink />
+      <style>{css}</style>
 
-// Treatment categories
-const CATS=[{tag:'Category',name:'Lorem<br>Ipsum',desc:'Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor.'},{tag:'Category',name:'Dolor<br>Sit',desc:'Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor.'},{tag:'Category',name:'Amet<br>Consectetur',desc:'Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor.'},{tag:'Category',name:'Adipiscing<br>Elit',desc:'Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor.'}];
-const tgrid=document.getElementById('tx-grid');
-CATS.forEach(c=>{const d=document.createElement('div');d.className='tx-card';d.innerHTML=`<div class="tx-img"><div class="tx-img-ph"></div></div><div class="tx-body"><p class="tx-cat">${c.tag}</p><h3 class="tx-name">${c.name}</h3><p class="tx-desc">${c.desc}</p></div>`;tgrid.appendChild(d)});
+      {/* Announcement Bar */}
+      <div className="announce-bar">
+        <span className="announce-item">London's Finest Aesthetics &amp; Wellness Clinic</span>
+        <span className="hide-mobile">
+          <span className="announce-sep">&nbsp;·&nbsp;</span>
+          <span className="announce-item">Safety in Beauty Diamond Award 2025</span>
+          <span className="announce-sep">&nbsp;·&nbsp;</span>
+          <span className="announce-item">WhatsApp Us</span>
+        </span>
+      </div>
 
-// Why Us
-const WHY=[{num:'01',title:'Lorem',body:'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'},{num:'02',title:'Ipsum',body:'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure.'},{num:'03',title:'Dolor',body:'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur excepteur sint occaecat.'}];
-const wgrid=document.getElementById('why-grid');
-WHY.forEach(w=>{const d=document.createElement('div');d.className='why-card';d.innerHTML=`<span class="why-num">${w.num}</span><h3 class="why-title">${w.title}</h3><p class="why-body">${w.body}</p>`;wgrid.appendChild(d)});
+      {/* Nav */}
+      <nav className="nav">
+        <div className="nav-left">
+          <a className="nav-cell">Treatments</a>
+          <a className="nav-cell active">The Clinic</a>
+        </div>
+        <div className="nav-logo">D R &nbsp; R A S H A</div>
+        <div className="nav-right">
+          <a className="nav-cell shop">Shop</a>
+          <button className="nav-cell book">Book Consultation</button>
+          <div className="nav-cart">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+              <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
+              <line x1="3" y1="6" x2="21" y2="6" />
+              <path d="M16 10a4 4 0 01-8 0" />
+            </svg>
+            <span className="cart-badge">1</span>
+          </div>
+          <button className="nav-hamburger" onClick={() => setMenuOpen(!menuOpen)}>
+            <span className="ham-line" style={menuOpen ? { transform: "translateY(6px) rotate(45deg)" } : {}} />
+            <span className="ham-line" style={menuOpen ? { opacity: 0 } : {}} />
+            <span className="ham-line" style={menuOpen ? { transform: "translateY(-6px) rotate(-45deg)" } : {}} />
+          </button>
+        </div>
+      </nav>
 
-// Reviews carousel
-const REVIEWS=[{text:'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim.',author:'A. Lorem'},{text:'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure.',author:'B. Ipsum'},{text:'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur excepteur sint occaecat.',author:'C. Dolor'},{text:'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum sed perspiciatis.',author:'D. Amet'}];
-let ridx=0;
-const vis=()=>window.innerWidth<=768?1:3;
-const rtrack=document.getElementById('rev-track');
-REVIEWS.forEach(r=>{const d=document.createElement('div');d.className='rev-card';d.innerHTML=`<div class="rev-stars">${'★★★★★'.split('').map(s=>`<span class="star">${s}</span>`).join('')}</div><p class="rev-text">"${r.text}"</p><div class="rev-meta"><span class="rev-author">${r.author}</span><span class="rev-ver">✓ Verified</span></div>`;rtrack.appendChild(d)});
-const rdots=document.getElementById('rev-dots');
-function buildDots(){rdots.innerHTML='';const m=Math.max(0,REVIEWS.length-vis());for(let i=0;i<=m;i++){const d=document.createElement('div');d.className='rdot'+(i===ridx?' active':'');d.onclick=()=>goRev(i);rdots.appendChild(d)}}
-function goRev(i){ridx=i;const v=vis();const m=Math.max(0,REVIEWS.length-v);ridx=Math.min(ridx,m);rtrack.querySelectorAll('.rev-card').forEach(c=>{c.style.minWidth=`calc(${100/v}% - ${v>1?16:0}px)`});rtrack.style.transform=`translateX(calc(-${ridx*(100/v)}% - ${ridx*24}px))`;buildDots();document.getElementById('rev-prev').disabled=ridx===0;document.getElementById('rev-next').disabled=ridx>=m}
-document.getElementById('rev-prev').onclick=()=>{if(ridx>0){ridx--;goRev(ridx)}};
-document.getElementById('rev-next').onclick=()=>{const m=Math.max(0,REVIEWS.length-vis());if(ridx<m){ridx++;goRev(ridx)}};
-window.addEventListener('resize',()=>goRev(ridx));
-goRev(0);
+      <div className={`mobile-menu ${menuOpen ? "open" : ""}`}>
+        {["Treatments", "The Clinic", "Shop", "About Dr Rasha", "Patient Results"].map(item => (
+          <div key={item} className="mobile-menu-item" onClick={() => setMenuOpen(false)}>{item}<span>›</span></div>
+        ))}
+        <button className="mobile-menu-book" onClick={() => setMenuOpen(false)}>Book Consultation</button>
+      </div>
 
-// Before & After sliders
-const BA=['Lorem','Ipsum','Dolor'];
-const bagrid=document.getElementById('ba-grid');
-BA.forEach(concern=>{
-  const wrap=document.createElement('div');
-  wrap.innerHTML=`<div class="ba-slider" data-concern="${concern}"><div class="ba-after"><div class="ba-ph"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="rgba(10,10,10,0.18)" stroke-width="1"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></div><span class="ba-slabel">After</span></div><div class="ba-before" style="width:50%"><div class="ba-before-inner"><div class="ba-ph"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="rgba(10,10,10,0.18)" stroke-width="1"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></div><span class="ba-slabel">Before</span></div></div><div class="ba-div" style="left:50%"></div><div class="ba-handle" style="left:50%"><span class="ba-arr l"></span><span class="ba-arr r"></span></div></div><span class="ba-label">${concern}</span>`;
-  bagrid.appendChild(wrap);
-  const slider=wrap.querySelector('.ba-slider');
-  const before=wrap.querySelector('.ba-before');
-  const div=wrap.querySelector('.ba-div');
-  const handle=wrap.querySelector('.ba-handle');
-  let drag=false;
-  const upd=p=>{before.style.width=p+'%';div.style.left=p+'%';handle.style.left=p+'%'};
-  const gp=x=>{const r=slider.getBoundingClientRect();return Math.max(0,Math.min((x-r.left)/r.width*100,100))};
-  slider.onmousedown=e=>{drag=true;e.preventDefault()};
-  document.addEventListener('mousemove',e=>{if(drag)upd(gp(e.clientX))});
-  document.addEventListener('mouseup',()=>drag=false);
-  slider.addEventListener('touchmove',e=>upd(gp(e.touches[0].clientX)),{passive:true});
-});
+      {/* Breadcrumb */}
+      <nav className="breadcrumb" aria-label="Breadcrumb">
+        {[
+          { label: "Home", href: "#" },
+          { label: "The Clinic", href: null },
+        ].map((crumb, i, arr) => (
+          <span key={crumb.label} style={{ display: "flex", alignItems: "center", gap: 8 }}>
+            {crumb.href
+              ? <a className="breadcrumb-item" href={crumb.href}>{crumb.label}</a>
+              : <span className="breadcrumb-item current">{crumb.label}</span>
+            }
+            {i < arr.length - 1 && (
+              <svg width="6" height="10" viewBox="0 0 6 10" fill="none" style={{flexShrink:0,opacity:0.3}}>
+                <path d="M1 1l4 4-4 4" stroke="var(--near-black)" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            )}
+          </span>
+        ))}
+      </nav>
 
-// Shop products
-const SHOP=[{brand:'Brand',name:'Lorem Ipsum<br>Serum',price:'£00.00'},{brand:'Brand',name:'Dolor Sit<br>Amet',price:'£00.00'},{brand:'Brand',name:'Consectetur<br>Cream',price:'£00.00'},{brand:'Brand',name:'Adipiscing<br>Elite',price:'£00.00'}];
-const sgrid=document.getElementById('shop-grid');
-SHOP.forEach(p=>{const d=document.createElement('div');d.className='shop-card';d.innerHTML=`<div class="shop-img"><div class="shop-img-ph"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="rgba(10,10,10,0.2)" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div></div><div class="shop-body"><p class="shop-brand">${p.brand}</p><h3 class="shop-name">${p.name}</h3><div class="shop-foot"><span class="shop-price">${p.price}</span></div></div>`;sgrid.appendChild(d)});
-</script>
-</body>
-</html>
+      {/* ① Hero */}
+      <section className="clinic-hero">
+        <div className="clinic-hero-content">
+          <span className="clinic-hero-pill">
+            <span className="clinic-hero-pill-dot" />
+            Knightsbridge, London
+          </span>
+          <h1 className="clinic-hero-title">
+            A clinic built on<br />medicine, not trends.
+          </h1>
+          <p className="clinic-hero-sub">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+          </p>
+          <div className="clinic-hero-bullets">
+            {["Physician-led treatments", "Medical-grade rooms"].map(b => (
+              <div key={b} className="clinic-hero-bullet">{b}</div>
+            ))}
+          </div>
+          <div className="hero-social-proof" style={{ marginBottom: 32 }}>
+            <div className="hero-proof-item">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="var(--gold)" style={{flexShrink:0}}>
+                <path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 3.8 2.4-7.4L2 9.4h7.6z"/>
+              </svg>
+              <span className="hero-proof-text"><strong>Trustpilot</strong></span>
+            </div>
+            <div className="hero-proof-divider" />
+            <div className="hero-proof-item">
+              <div className="hero-proof-stars">
+                {[1,2,3,4,5].map(i => <span key={i} className="hero-proof-star">★</span>)}
+              </div>
+              <span className="hero-proof-text"><strong>4.9</strong> · 312 reviews</span>
+            </div>
+          </div>
+          <div style={{display:'flex',alignItems:'center',gap:20,flexWrap:'wrap'}}>
+            <button className="btn-primary">Book Consultation</button>
+            <button className="btn-whatsapp-dark"><WA_ICON /> WhatsApp Us</button>
+          </div>
+        </div>
+        <div className="clinic-hero-image">
+          <div className="clinic-hero-image-inner">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="rgba(10,10,10,0.2)" strokeWidth="1">
+              <rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/>
+            </svg>
+            <span>Clinic Image</span>
+          </div>
+        </div>
+      </section>
+
+      {/* ② Stat Strip */}
+      <div className="stat-strip">
+        {[
+          { val: "2,400+", label: "Patients Treated", note: "Since founding" },
+          { val: "4.9★", label: "Average Rating", note: "Verified reviews" },
+          { val: "GMC", label: "Registered Doctors", note: "All treating clinicians" },
+          { val: "2025", label: "Safety in Beauty Award", note: "Diamond Award Winner" },
+        ].map(s => (
+          <div key={s.label} className="stat-cell">
+            <span className="stat-val">{s.val}</span>
+            <span className="stat-label">{s.label}</span>
+            <span className="stat-note">{s.note}</span>
+          </div>
+        ))}
+      </div>
+
+      {/* ③ Philosophy */}
+      <section className="section" style={{ paddingBottom: 64 }}>
+        <div className="philosophy-condensed">
+          <div className="philosophy-condensed-left">
+            <span className="section-tag">Our Philosophy</span>
+            <h2 className="section-title">Medicine before aesthetics</h2>
+          </div>
+          <div className="philosophy-condensed-right">
+            <p className="philosophy-condensed-body">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure dolor.
+            </p>
+            <blockquote className="philosophy-pull-inline">
+              "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+            </blockquote>
+            <div className="philosophy-award-inline">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" strokeWidth="1.25">
+                <circle cx="12" cy="8" r="6"/><path d="M8.21 13.89L7 23l5-3 5 3-1.21-9.12"/>
+              </svg>
+              <span className="philosophy-award-inline-text">Safety in Beauty Diamond Award 2025 — Best Aesthetic Clinic, UK</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ⑤ Our Approach */}
+      <section className="section section-dark">
+        <span className="section-tag">How We Work</span>
+        <h2 className="section-title" style={{ color: "var(--white)" }}>Our approach</h2>
+        <div className="values-grid">
+          {[
+            {
+              num: "01",
+              title: "Listen before treating",
+              body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim.",
+            },
+            {
+              num: "02",
+              title: "Clinical assessment first",
+              body: "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure.",
+            },
+            {
+              num: "03",
+              title: "Conservative by design",
+              body: "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur excepteur sint occaecat.",
+            },
+          ].map(v => (
+            <div key={v.num} className="value-card">
+              <span className="value-num">{v.num}</span>
+              <span className="value-title">{v.title}</span>
+              <p className="value-body">{v.body}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Reviews */}
+      <section className="section section-alt">
+        <div style={{ display:"flex", alignItems:"flex-end", justifyContent:"space-between", marginBottom:44, gap:16 }}>
+          <div>
+            <span className="section-tag">Patient Reviews</span>
+            <h2 className="section-title">What our patients say</h2>
+          </div>
+          <div style={{ display:"flex", alignItems:"center", gap:8, flexShrink:0 }}>
+            <span style={{ color:"var(--gold)", fontSize:12 }}>★★★★★</span>
+            <span style={{ fontSize:11, letterSpacing:"0.1em", color:"var(--mid-grey)", textTransform:"uppercase", whiteSpace:"nowrap" }}>4.9 · 312 reviews</span>
+          </div>
+        </div>
+        <ClinicReviews />
+      </section>
+
+      {/* ⑥ Clinic Space */}
+      <section className="section">
+        <div className="space-intro">
+          <div>
+            <span className="section-tag">The Space</span>
+            <h2 className="section-title">161 Brompton Road, Knightsbridge</h2>
+          </div>
+          <div className="space-body">
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis nostrud exercitation ullamco.
+            </p>
+          </div>
+        </div>
+        <div className="space-carousel-wrapper">
+          <div className="space-carousel" id="space-carousel">
+            {[
+              { label: "Clinic Interior", i: 1 },
+              { label: "Consultation Room", i: 2 },
+              { label: "Treatment Room", i: 3 },
+              { label: "Reception", i: 4 },
+              { label: "Waiting Area", i: 5 },
+              { label: "Detail", i: 6 },
+            ].map(({ label, i }) => (
+              <div key={label} className="space-carousel-card">
+                <div className={`space-carousel-img spc-${((i - 1) % 4) + 1}`}>
+                  <span className="space-carousel-label">{label}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+        <SpaceCarouselControls />
+      </section>
+
+      {/* ⑦ Certifications */}
+      <div className="certs-strip">
+        {[
+          {
+            icon: <><circle cx="12" cy="12" r="9"/><path d="M9 12l2 2 4-4"/></>,
+            title: "CQC Registered",
+            note: "Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod.",
+          },
+          {
+            icon: <><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 3.8 2.4-7.4L2 9.4h7.6z"/></>,
+            title: "Safety in Beauty 2025",
+            note: "Lorem ipsum dolor sit amet consectetur adipiscing elit sed eiusmod tempor.",
+          },
+          {
+            icon: <><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/></>,
+            title: "JCCP Compliant",
+            body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod tempor.",
+          },
+          {
+            icon: <><circle cx="12" cy="8" r="6"/><path d="M8.21 13.89L7 23l5-3 5 3-1.21-9.12"/></>,
+            title: "BCAM Member",
+            note: "Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod.",
+          },
+        ].map(c => (
+          <div key={c.title} className="cert-cell">
+            <div className="cert-icon"><svg viewBox="0 0 24 24">{c.icon}</svg></div>
+            <span className="cert-title">{c.title}</span>
+            <span className="cert-note">{c.note || c.body}</span>
+          </div>
+        ))}
+      </div>
+
+      {/* ⑧ Team Carousel */}
+      <section className="section section-alt">
+        <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", marginBottom: 44 }}>
+          <div>
+            <span className="section-tag">The Team</span>
+            <h2 className="section-title">Our practitioners</h2>
+          </div>
+          <div className="team-carousel-controls">
+            <button className="team-nav" id="team-prev">←</button>
+            <button className="team-nav" id="team-next">→</button>
+          </div>
+        </div>
+        <TeamCarousel />
+      </section>
+
+      {/* ⑨ Safety */}
+      <section className="section">
+        <div className="safety-layout">
+          <div>
+            <span className="section-tag">Patient Safety</span>
+            <h2 className="section-title">Safety standards you should expect</h2>
+            <p style={{ fontSize: 13, fontWeight: 300, lineHeight: 1.8, color: "var(--mid-grey)", marginTop: 20, letterSpacing: "0.02em" }}>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam.
+            </p>
+          </div>
+          <div className="acc-list" style={{ borderTop: "1px solid var(--border)" }}>
+            {SAFETY_FAQS.map((f, i) => (
+              <AccItem key={i} title={f.title} body={f.body} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ⑩ Visit */}
+      <div className="visit-grid">
+        <div className="visit-info">
+          <span className="visit-tag">Visit Us</span>
+          <h2 className="visit-title">Find us in Knightsbridge</h2>
+          <div className="visit-detail">
+            <div className="visit-item">
+              <span className="visit-item-label">Address</span>
+              <div className="visit-item-value">
+                <strong>161 Brompton Road</strong>
+                Knightsbridge<br />London SW3 1EX
+              </div>
+            </div>
+            <div className="visit-item">
+              <span className="visit-item-label">By tube</span>
+              <div className="visit-item-value">
+                Knightsbridge station (Piccadilly Line), 3-minute walk. South Kensington (Circle, District, Piccadilly), 8 minutes.
+              </div>
+            </div>
+            <div className="visit-item">
+              <span className="visit-item-label">Hours</span>
+              <div className="visit-item-value">
+                <div className="visit-hours">
+                  {[
+                    ["Monday", "9AM – 7PM"],
+                    ["Tuesday", "9AM – 8PM"],
+                    ["Wednesday", "9AM – 8PM"],
+                    ["Thursday", "9AM – 8PM"],
+                    ["Friday", "9AM – 7PM"],
+                  ].map(([d, t]) => (
+                    <div key={d} className="visit-hour-row">
+                      <span className="visit-hour-day">{d}</span>
+                      <span className="visit-hour-time">{t}</span>
+                    </div>
+                  ))}
+                  <div className="visit-divider" />
+                  {[
+                    ["Saturday", "9AM – 7PM"],
+                    ["Sunday", "Closed"],
+                  ].map(([d, t]) => (
+                    <div key={d} className="visit-hour-row">
+                      <span className="visit-hour-day">{d}</span>
+                      <span className="visit-hour-time">{t}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+            <div className="visit-item">
+              <span className="visit-item-label">Contact</span>
+              <div className="visit-item-value">
+                <strong>0203 337 4410</strong>
+                WhatsApp: 07780 851111<br />
+                info@drrashaclinic.com
+              </div>
+            </div>
+          </div>
+          <div className="visit-cta" style={{ marginTop: 40 }}>
+            <button className="btn-gold">Book a Consultation</button>
+          </div>
+        </div>
+        <div className="visit-map">
+          <div className="visit-map-inner">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="rgba(10,10,10,0.3)" strokeWidth="1">
+              <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
+              <circle cx="12" cy="9" r="2.5"/>
+            </svg>
+            <span>161 Brompton Road, SW3</span>
+          </div>
+        </div>
+      </div>
+
+    </>
+  );
+}
