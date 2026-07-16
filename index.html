@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Lorem Ipsum Dolor Sit Amet — Dr Rasha</title>
+  <title>DR RASHA — Cart</title>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400;1,500&family=Jost:wght@200;300;400&display=swap" rel="stylesheet" />
   <style>
     :root {
@@ -11,13 +11,11 @@
       --cream: #F5F0E8;
       --warm-bg: #EDE8DC;
       --gold: #B8965A;
+      --gold-light: #D4B483;
       --white: #FFFFFF;
       --mid-grey: #6B6560;
       --border: rgba(10,10,10,0.12);
-      --green: #2D5A3D;
-      --green-dark: #1e3f2a;
-      --text: #1a1a18;
-      --muted: #6b6b63;
+      --red: #C0392B;
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
@@ -27,6 +25,7 @@
       font-family: 'Jost', sans-serif;
       font-weight: 300;
       -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
     }
 
     /* ── Announcement Bar ── */
@@ -53,10 +52,9 @@
       font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
       cursor: pointer; color: var(--near-black); text-decoration: none;
       white-space: nowrap; background: none;
-      border-top: none; border-bottom: 2px solid transparent; border-left: none;
+      border-top: none; border-bottom: none; border-left: none;
       font-family: 'Jost', sans-serif;
     }
-    .nav-cell.active { border-bottom: 2px solid var(--gold); }
     .nav-logo {
       flex: 1; display: flex; align-items: center; justify-content: center;
       font-family: 'Cormorant Garamond', serif;
@@ -66,18 +64,19 @@
     .nav-cell.shop { border-left: 1px solid var(--border); border-right: none; }
     .nav-cell.book {
       background: var(--near-black); color: var(--white);
-      padding: 0 28px; font-size: 10px; letter-spacing: 0.2em;
-      border-top: none; border-bottom: none; border-left: none; border-right: none;
+      padding: 0 28px; font-size: 10px; letter-spacing: 0.2em; border: none;
     }
     .nav-cart {
       display: flex; align-items: center; padding: 0 18px;
       border-left: 1px solid var(--border); cursor: pointer; position: relative;
+      box-shadow: inset 0 -2px 0 var(--gold);
     }
     .cart-badge {
       position: absolute; top: 14px; right: 10px;
       background: var(--gold); color: var(--white);
       font-size: 9px; width: 14px; height: 14px; border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
+      font-family: 'Jost', sans-serif;
     }
     .nav-hamburger {
       display: none; align-items: center; justify-content: center;
@@ -86,10 +85,13 @@
       border-top: none; border-right: none; border-bottom: none;
       flex-direction: column; gap: 5px;
     }
-    .ham-line { width: 22px; height: 1px; background: var(--near-black); display: block; transition: transform 0.25s, opacity 0.25s; }
+    .ham-line {
+      width: 22px; height: 1px; background: var(--near-black);
+      transition: transform 0.25s, opacity 0.25s; display: block;
+    }
 
     /* ── Breadcrumb ── */
-    .drc-breadcrumb {
+    .breadcrumb {
       background: var(--cream); border-bottom: 1px solid var(--border);
       padding: 12px 80px; display: flex; align-items: center; gap: 8px;
     }
@@ -100,167 +102,205 @@
     }
     .breadcrumb-item:hover { color: var(--near-black); }
     .breadcrumb-item.current { color: var(--near-black); cursor: default; }
-    .breadcrumb-sep { opacity: 0.3; flex-shrink: 0; }
 
-    /* ── PDP Layout ── */
-    .pdp-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 48px 40px 80px;
+    /* ── Page Header ── */
+    .page-header {
+      background: var(--warm-bg); border-bottom: 1px solid var(--border);
+      padding: 36px 80px;
+      display: flex; align-items: flex-end; justify-content: space-between; gap: 20px;
     }
-    .pdp-gallery { padding-right: 56px; }
-    .pdp-buyside { padding-top: 4px; }
-
-    /* ── Gallery ── */
-    .gallery-main {
-      position: relative;
-      margin-bottom: 14px;
+    .page-tag {
+      font-size: 9px; letter-spacing: 0.24em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 8px; display: block;
     }
-    .gallery-placeholder {
-      width: 100%; padding-bottom: 100%;
-      position: relative;
-    }
-    .gallery-placeholder-inner {
-      position: absolute; inset: 0;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      gap: 8px; opacity: 0.3;
-    }
-    .gallery-placeholder-inner span {
-      font-size: 9px; letter-spacing: 0.12em; font-weight: 600; color: #333;
-    }
-    .gallery-zoom {
-      position: absolute; top: 14px; right: 14px;
-      width: 36px; height: 36px;
-      background: rgba(255,255,255,0.88); border: none; border-radius: 50%;
-      display: flex; align-items: center; justify-content: center; cursor: pointer;
-    }
-    .gallery-arrow {
-      position: absolute; top: 50%; transform: translateY(-50%);
-      width: 36px; height: 36px;
-      background: rgba(255,255,255,0.88); border: none; border-radius: 50%;
-      font-size: 18px; color: var(--near-black);
-      cursor: pointer; display: flex; align-items: center; justify-content: center;
-      transition: background 0.2s;
-    }
-    .gallery-arrow:hover { background: rgba(255,255,255,1); }
-    .gallery-arrow.left { left: 12px; }
-    .gallery-arrow.right { right: 12px; }
-    .gallery-dots {
-      position: absolute; bottom: 14px; left: 50%; transform: translateX(-50%);
-      display: flex; gap: 6px;
-    }
-    .gallery-dot {
-      width: 7px; height: 7px; border-radius: 50%;
-      background: rgba(0,0,0,0.22); border: none; padding: 0; cursor: pointer;
-      transition: background 0.2s;
-    }
-    .gallery-dot.active { background: var(--near-black); }
-    .thumb-row { display: flex; gap: 12px; }
-    .thumb-item {
-      width: calc(33.33% - 8px); aspect-ratio: 1;
-      border: 2px solid transparent; padding: 0; cursor: pointer;
-      transition: border-color 0.2s; position: relative;
-    }
-    .thumb-item.active { border-color: var(--near-black); }
-    .thumb-inner {
-      position: absolute; inset: 0;
-      display: flex; align-items: center; justify-content: center; opacity: 0.2;
-    }
-
-    /* ── Buy Zone ── */
-    .tag-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
-    .tag-pill {
-      border: 1px solid var(--border); padding: 5px 12px;
-      font-size: 9px; letter-spacing: 0.1em; font-weight: 500;
-      color: var(--muted); border-radius: 20px;
-    }
-    .product-size {
-      font-size: 10px; letter-spacing: 0.18em; font-weight: 600;
-      color: var(--muted); margin-bottom: 10px;
-    }
-    .product-title {
+    .page-title {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 52px; font-weight: 300; line-height: 1.08;
-      color: var(--text); margin-bottom: 18px;
+      font-size: 36px; font-weight: 300; font-style: italic;
+      line-height: 1.05; color: var(--near-black);
     }
-    .rating-row { display: flex; align-items: center; gap: 10px; margin-bottom: 22px; }
-    .stars { display: inline-flex; gap: 2px; }
-    .rating-text { font-size: 13px; color: var(--muted); }
-    .price-row { display: flex; align-items: center; gap: 16px; margin-bottom: 26px; }
-    .price { font-size: 22px; font-weight: 600; color: var(--text); }
-    .stock-badge {
-      background: #EBF4EE; color: #2D5A3D;
-      font-size: 10px; letter-spacing: 0.1em; font-weight: 600;
-      padding: 4px 12px; border-radius: 3px;
-    }
-    .benefits-list { display: flex; flex-direction: column; gap: 11px; margin-bottom: 30px; }
-    .benefit-item { display: flex; align-items: flex-start; gap: 10px; }
-    .benefit-text { font-size: 13px; color: var(--text); line-height: 1.55; }
 
-    /* ── ATC ── */
-    .atc-row { display: flex; gap: 12px; margin-bottom: 36px; }
-    .qty-box {
-      display: flex; align-items: center;
-      border: 1px solid var(--border); width: 110px; flex-shrink: 0;
+    /* ── Delivery Bar ── */
+    .delivery-bar {
+      background: var(--near-black); padding: 12px 80px;
+      display: flex; align-items: center; gap: 16px;
     }
+    .delivery-bar-text {
+      font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--white); white-space: nowrap; flex-shrink: 0;
+    }
+    .delivery-bar-text em { color: var(--gold); font-style: normal; }
+    .delivery-progress-track {
+      flex: 1; height: 1px; background: rgba(255,255,255,0.15); position: relative;
+    }
+    .delivery-progress-fill {
+      height: 1px; background: var(--gold); transition: width 0.5s ease;
+      position: absolute; top: 0; left: 0;
+    }
+    .delivery-bar-amount {
+      font-size: 10px; letter-spacing: 0.12em; color: rgba(255,255,255,0.5);
+      white-space: nowrap; flex-shrink: 0;
+    }
+
+    /* ── Cart Layout ── */
+    .cart-layout {
+      display: grid; grid-template-columns: 1fr 380px;
+      gap: 0; align-items: start; min-height: calc(100vh - 200px);
+    }
+    .cart-main { padding: 48px 80px 80px 80px; border-right: 1px solid var(--border); }
+    .cart-sidebar { padding: 48px 40px 80px 40px; position: sticky; top: 64px; }
+
+    /* ── Cart Items ── */
+    .cart-items-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding-bottom: 20px; border-bottom: 1px solid var(--border);
+    }
+    .cart-items-label {
+      font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold);
+    }
+    .cart-item {
+      display: grid; grid-template-columns: 100px 1fr auto;
+      gap: 24px; padding: 28px 0; border-bottom: 1px solid var(--border); align-items: start;
+    }
+    .cart-item-image {
+      aspect-ratio: 3/4; overflow: hidden;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .cart-item-image.p1 { background: linear-gradient(160deg, #E8E0D0 0%, #D0C4AC 100%); }
+    .cart-item-image.p2 { background: linear-gradient(160deg, #E4DDD0 0%, #CFC8BA 100%); }
+    .cart-item-body { display: flex; flex-direction: column; gap: 8px; }
+    .cart-item-category { font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); }
+    .cart-item-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 19px; font-weight: 300; font-style: italic; color: var(--near-black); line-height: 1.15;
+    }
+    .cart-item-variant { font-size: 11px; font-weight: 300; color: var(--mid-grey); letter-spacing: 0.04em; }
+    .cart-item-qty-row { display: flex; align-items: center; gap: 16px; margin-top: 12px; }
+    .qty-control { display: flex; align-items: center; border: 1px solid var(--border); }
     .qty-btn {
-      width: 36px; height: 50px; border: none; background: none;
-      font-size: 18px; color: var(--text); cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
+      width: 32px; height: 32px; background: none; border: none; cursor: pointer;
+      font-family: 'Jost', sans-serif; font-size: 16px; font-weight: 200;
+      color: var(--near-black); display: flex; align-items: center; justify-content: center;
+      transition: background 0.15s;
     }
-    .qty-val { flex: 1; text-align: center; font-size: 14px; color: var(--text); }
-    .atc-btn {
-      flex: 1; height: 50px;
-      background: var(--green); color: var(--white); border: none;
-      font-size: 10px; letter-spacing: 0.15em; font-weight: 600;
+    .qty-btn:hover { background: var(--warm-bg); }
+    .qty-btn.is-delete { color: var(--mid-grey); }
+    .qty-btn.is-delete:hover { background: #fdf0ef; color: var(--red); }
+    .qty-value {
+      width: 40px; text-align: center;
+      font-size: 12px; font-weight: 300; letter-spacing: 0.1em; color: var(--near-black);
+      border-left: 1px solid var(--border); border-right: 1px solid var(--border);
+      line-height: 32px; user-select: none;
+    }
+    .cart-item-price-col { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; padding-top: 2px; }
+    .cart-item-price { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 300; color: var(--near-black); }
+    .cart-item-price-per { font-size: 10px; font-weight: 300; color: var(--mid-grey); letter-spacing: 0.04em; }
+
+    /* ── Coupon ── */
+    .coupon-row { margin-top: 28px; display: flex; border: 1px solid var(--border); overflow: hidden; }
+    .coupon-input {
+      flex: 1; padding: 14px 16px;
+      font-family: 'Jost', sans-serif; font-size: 11px; letter-spacing: 0.08em;
+      font-weight: 300; color: var(--near-black); background: var(--white); border: none; outline: none;
+    }
+    .coupon-input::placeholder { color: var(--mid-grey); letter-spacing: 0.1em; text-transform: uppercase; font-size: 9px; }
+    .coupon-btn {
+      padding: 14px 20px; background: var(--near-black); color: var(--white);
+      font-family: 'Jost', sans-serif; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase;
+      border: none; cursor: pointer; white-space: nowrap; transition: background 0.2s;
+    }
+    .coupon-btn:hover { background: #2a2a2a; }
+    .coupon-msg { font-size: 10px; letter-spacing: 0.1em; color: var(--gold); margin-top: 8px; text-transform: uppercase; display: none; }
+
+    /* ── Order Notes ── */
+    .order-notes-toggle {
+      margin-top: 16px; display: flex; align-items: center; gap: 8px; cursor: pointer;
+      background: none; border: none; padding: 8px 0; font-family: 'Jost', sans-serif;
+      font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--mid-grey); transition: color 0.2s;
+    }
+    .order-notes-toggle:hover { color: var(--near-black); }
+    .order-notes-toggle svg { transition: transform 0.25s; }
+    .order-notes-toggle.open svg { transform: rotate(180deg); }
+    .order-notes-body { overflow: hidden; max-height: 0; transition: max-height 0.35s ease; }
+    .order-notes-body.open { max-height: 200px; }
+    .order-notes-textarea {
+      width: 100%; margin-top: 10px;
+      padding: 14px 16px; background: var(--white); border: 1px solid var(--border);
+      font-family: 'Jost', sans-serif; font-size: 12px; font-weight: 300;
+      color: var(--near-black); resize: none; outline: none; height: 90px;
+    }
+    .order-notes-textarea::placeholder { color: var(--mid-grey); font-size: 11px; }
+
+    /* ── Sidebar ── */
+    .sidebar-label { font-size: 9px; letter-spacing: 0.24em; text-transform: uppercase; color: var(--gold); display: block; margin-bottom: 20px; }
+    .summary-lines { display: flex; flex-direction: column; gap: 14px; margin-bottom: 20px; }
+    .summary-line { display: flex; align-items: center; justify-content: space-between; }
+    .summary-line-label { font-size: 11px; font-weight: 300; letter-spacing: 0.06em; color: var(--mid-grey); }
+    .summary-line-value { font-size: 12px; font-weight: 300; color: var(--near-black); letter-spacing: 0.04em; }
+    .summary-line-value.free { color: var(--gold); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; }
+    .summary-divider { height: 1px; background: var(--border); margin: 8px 0; }
+    .summary-total-line { display: flex; align-items: baseline; justify-content: space-between; padding-top: 4px; }
+    .summary-total-label { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--near-black); }
+    .summary-total-value { font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 300; color: var(--near-black); line-height: 1; }
+    .summary-total-note { font-size: 10px; font-weight: 300; color: var(--mid-grey); letter-spacing: 0.04em; margin-top: 4px; text-align: right; }
+    .checkout-btn {
+      width: 100%; margin-top: 24px;
+      background: var(--near-black); color: var(--white);
+      font-family: 'Jost', sans-serif; font-size: 10px; font-weight: 400;
+      letter-spacing: 0.22em; text-transform: uppercase;
+      padding: 18px 24px; border: none; cursor: pointer; transition: background 0.2s;
       display: flex; align-items: center; justify-content: center; gap: 10px;
-      cursor: pointer; transition: background 0.2s;
     }
-    .atc-btn:hover { background: var(--green-dark); }
-
-    /* ── Accordions ── */
-    .accordion-wrap { border-top: 1px solid var(--border); }
-    .accordion-item { border-bottom: 1px solid var(--border); }
-    .accordion-trigger {
-      width: 100%; display: flex; justify-content: space-between; align-items: center;
-      padding: 18px 0; background: none; border: none; cursor: pointer;
-    }
-    .accordion-label {
-      font-size: 10px; letter-spacing: 0.15em; font-weight: 600; color: var(--text);
-    }
-    .accordion-icon { font-size: 18px; color: var(--muted); line-height: 1; }
-    .accordion-body { display: none; padding-bottom: 20px; }
-    .accordion-body.open { display: block; }
-    .accordion-body p {
-      font-size: 13px; line-height: 1.8; color: var(--muted); max-width: 520px;
-    }
-
-    /* ── Sticky mobile ATC ── */
-    .sticky-atc {
-      display: none;
-      position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
-      background: var(--cream); border-top: 1px solid var(--border);
-      padding: 12px 20px; gap: 10px; align-items: center;
-    }
-    .sticky-qty {
-      display: flex; align-items: center;
-      border: 1px solid var(--border); flex-shrink: 0;
-    }
-    .sticky-qty-btn {
-      width: 40px; height: 48px; border: none; background: none;
-      font-size: 18px; color: var(--text); cursor: pointer;
+    .checkout-btn:hover { background: #222; }
+    .sidebar-trust { margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border); display: flex; flex-direction: column; gap: 11px; }
+    .trust-row { display: flex; align-items: center; gap: 10px; font-size: 10px; font-weight: 300; letter-spacing: 0.04em; color: var(--mid-grey); }
+    .trust-row svg { flex-shrink: 0; }
+    .payment-icons { margin-top: 20px; padding-top: 18px; border-top: 1px solid var(--border); display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .payment-icon {
+      height: 22px; border: 1px solid var(--border); background: var(--white); padding: 0 8px;
       display: flex; align-items: center; justify-content: center;
+      font-size: 8px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--mid-grey); white-space: nowrap;
     }
-    .sticky-qty-val { width: 32px; text-align: center; font-size: 14px; color: var(--text); }
-    .sticky-atc-btn {
-      flex: 1; height: 48px;
-      background: var(--green); color: var(--white); border: none;
-      font-size: 10px; letter-spacing: 0.15em; font-weight: 600;
-      display: flex; align-items: center; justify-content: center; gap: 8px;
-      cursor: pointer;
+
+    /* ── Cross-sell ── */
+    .cross-sell { margin-top: 48px; padding-top: 40px; border-top: 1px solid var(--border); }
+    .cross-sell-header { margin-bottom: 28px; }
+    .cross-sell-label { font-size: 9px; letter-spacing: 0.24em; text-transform: uppercase; color: var(--gold); display: block; margin-bottom: 8px; }
+    .cross-sell-title { font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 300; font-style: italic; color: var(--near-black); }
+    .cross-sell-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
+    .cs-card { display: flex; flex-direction: column; cursor: pointer; }
+    .cs-card-image { aspect-ratio: 3/4; overflow: hidden; display: flex; align-items: center; justify-content: center; transition: transform 0.4s ease; }
+    .cs-card:hover .cs-card-image { transform: scale(1.02); }
+    .cs-card:nth-child(1) .cs-card-image { background: linear-gradient(165deg, #E8E0D0 0%, #D4C9B5 100%); }
+    .cs-card:nth-child(2) .cs-card-image { background: linear-gradient(165deg, #E4DDD0 0%, #CFC8BA 100%); }
+    .cs-card:nth-child(3) .cs-card-image { background: linear-gradient(165deg, #DDD6C8 0%, #C4B89A 100%); }
+    .cs-card-body { padding: 14px 0 0; }
+    .cs-card-name { font-family: 'Cormorant Garamond', serif; font-size: 16px; font-style: italic; font-weight: 300; color: var(--near-black); line-height: 1.2; margin-bottom: 4px; }
+    .cs-card-price { font-size: 11px; font-weight: 300; color: var(--mid-grey); letter-spacing: 0.04em; margin-bottom: 10px; }
+    .cs-add-btn {
+      font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--near-black); background: none; border: none; border-bottom: 1px solid var(--near-black);
+      padding: 0 0 2px; cursor: pointer; font-family: 'Jost', sans-serif;
+      transition: color 0.2s, border-color 0.2s;
     }
+    .cs-add-btn:hover { color: var(--gold); border-color: var(--gold); }
+
+    /* ── Sticky Mobile Checkout Bar ── */
+    .mobile-checkout-bar {
+      display: none; position: fixed; bottom: 0; left: 0; right: 0; z-index: 300;
+      background: var(--near-black); padding: 14px 20px; flex-direction: column;
+      border-top: 1px solid rgba(255,255,255,0.08); box-shadow: 0 -4px 24px rgba(0,0,0,0.18);
+    }
+    .mobile-checkout-bar-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+    .mobile-checkout-total-label { font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.5); }
+    .mobile-checkout-total-value { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 300; color: var(--white); line-height: 1; }
+    .mobile-checkout-btn {
+      width: 100%; padding: 16px; background: var(--white); color: var(--near-black);
+      font-family: 'Jost', sans-serif; font-size: 10px; font-weight: 400;
+      letter-spacing: 0.22em; text-transform: uppercase; border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+    }
+    .mobile-checkout-trust { margin-top: 10px; text-align: center; font-size: 9px; letter-spacing: 0.1em; color: rgba(255,255,255,0.35); text-transform: uppercase; }
 
     /* ── Mobile ── */
     @media (max-width: 768px) {
@@ -271,17 +311,42 @@
       .nav-cell.shop, .nav-cell.book { display: none; }
       .nav-logo { font-size: 17px; letter-spacing: 0.22em; }
       .nav-hamburger { display: flex; }
-      .drc-breadcrumb { padding: 10px 20px; overflow-x: auto; white-space: nowrap; scrollbar-width: none; }
-      .drc-breadcrumb::-webkit-scrollbar { display: none; }
-
-      .pdp-grid { grid-template-columns: 1fr; padding: 0 0 100px; }
-      .pdp-gallery { padding-right: 0; }
-      .pdp-buyside { padding: 20px 20px 0; }
-      .product-title { font-size: 36px; }
-      .thumb-row { padding: 0 20px; gap: 8px; }
-      .thumb-item { width: calc(33.33% - 6px); }
-      .atc-row { display: none; }
-      .sticky-atc { display: flex; }
+      .breadcrumb { padding: 10px 20px; overflow-x: auto; scrollbar-width: none; }
+      .breadcrumb::-webkit-scrollbar { display: none; }
+      .page-header { padding: 20px 20px 16px; flex-direction: column; align-items: flex-start; gap: 4px; }
+      .page-title { font-size: 26px; }
+      .delivery-bar { padding: 10px 20px; flex-wrap: wrap; gap: 10px; }
+      .delivery-bar-text { font-size: 9px; }
+      .delivery-bar-amount { font-size: 9px; }
+      .cart-layout { grid-template-columns: 1fr; padding-bottom: 120px; }
+      .cart-main { padding: 20px 20px 24px; border-right: none; }
+      .cart-sidebar { padding: 24px 20px; position: static; border-top: 1px solid var(--border); background: var(--warm-bg); }
+      .checkout-btn { display: none; }
+      .mobile-checkout-bar { display: flex; }
+      .cart-item { grid-template-columns: 76px 1fr; gap: 14px; padding: 20px 0; }
+      .cart-item-image { aspect-ratio: 1/1; }
+      .cart-item-price-col { display: none; }
+      .cart-item-name { font-size: 16px; }
+      .cart-item-variant { font-size: 10px; }
+      .cart-item-qty-row { gap: 12px; margin-top: 10px; }
+      .qty-btn { width: 36px; height: 36px; font-size: 18px; }
+      .qty-value { width: 44px; line-height: 36px; font-size: 13px; }
+      .coupon-row { margin-top: 20px; }
+      .coupon-input { font-size: 12px; padding: 16px; }
+      .coupon-btn { padding: 16px 18px; }
+      .summary-total-value { font-size: 22px; }
+      .cross-sell { margin-top: 32px; padding-top: 28px; }
+      .cross-sell-grid { grid-template-columns: repeat(2, 1fr); }
+      .cross-sell-grid .cs-card:nth-child(3) { display: none; }
+      .cs-card-name { font-size: 14px; }
+    }
+    @media (max-width: 480px) {
+      .cart-main { padding: 16px 16px 20px; }
+      .cart-sidebar { padding: 20px 16px; }
+      .page-header { padding: 16px 16px 12px; }
+      .delivery-bar { padding: 10px 16px; }
+      .cart-item { grid-template-columns: 68px 1fr; gap: 12px; }
+      .mobile-checkout-bar { padding: 12px 16px; }
     }
   </style>
 </head>
@@ -289,12 +354,12 @@
 
   <!-- Announcement Bar -->
   <div class="announce-bar">
-    <span class="announce-item">London's Finest Aesthetics &amp; Wellness Clinic</span>
+    <span class="announce-item">Lorem ipsum dolor sit amet consectetur</span>
     <span class="hide-mobile">
       <span class="announce-sep">&nbsp;·&nbsp;</span>
-      <span class="announce-item">Safety in Beauty Diamond Award 2025</span>
+      <span class="announce-item">Lorem ipsum dolor sit amet</span>
       <span class="announce-sep">&nbsp;·&nbsp;</span>
-      <span class="announce-item">WhatsApp Us</span>
+      <span class="announce-item">Lorem ipsum dolor</span>
     </span>
   </div>
 
@@ -306,7 +371,7 @@
     </div>
     <div class="nav-logo">D R &nbsp; R A S H A</div>
     <div class="nav-right">
-      <a class="nav-cell shop active">Shop</a>
+      <a class="nav-cell shop">Shop</a>
       <button class="nav-cell book">Book Consultation</button>
       <div class="nav-cart">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -314,9 +379,9 @@
           <line x1="3" y1="6" x2="21" y2="6"/>
           <path d="M16 10a4 4 0 01-8 0"/>
         </svg>
-        <span class="cart-badge">1</span>
+        <span class="cart-badge" id="nav-badge">2</span>
       </div>
-      <button class="nav-hamburger" id="hamburger">
+      <button class="nav-hamburger" id="hamburger" aria-label="Menu">
         <span class="ham-line" id="ham1"></span>
         <span class="ham-line" id="ham2"></span>
         <span class="ham-line" id="ham3"></span>
@@ -325,229 +390,358 @@
   </nav>
 
   <!-- Breadcrumb -->
-  <nav class="drc-breadcrumb" aria-label="Breadcrumb">
+  <nav class="breadcrumb">
     <a class="breadcrumb-item" href="#">Home</a>
-    <svg width="6" height="10" viewBox="0 0 6 10" fill="none" class="breadcrumb-sep">
+    <svg width="6" height="10" viewBox="0 0 6 10" fill="none" style="flex-shrink:0;opacity:0.3">
       <path d="M1 1l4 4-4 4" stroke="#0A0A0A" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
     </svg>
     <a class="breadcrumb-item" href="#">Shop</a>
-    <svg width="6" height="10" viewBox="0 0 6 10" fill="none" class="breadcrumb-sep">
+    <svg width="6" height="10" viewBox="0 0 6 10" fill="none" style="flex-shrink:0;opacity:0.3">
       <path d="M1 1l4 4-4 4" stroke="#0A0A0A" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
     </svg>
-    <span class="breadcrumb-item current">Lorem Ipsum Dolor Sit Amet</span>
+    <span class="breadcrumb-item current">Cart</span>
   </nav>
 
-  <!-- PDP -->
-  <div class="pdp-grid">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div>
+      <span class="page-tag">Lorem Ipsum</span>
+      <h1 class="page-title">Lorem Ipsum</h1>
+    </div>
+  </div>
 
-    <!-- GALLERY -->
-    <div class="pdp-gallery">
-      <div class="gallery-main">
-        <!-- Main image -->
-        <div class="gallery-placeholder" id="main-img" style="background:#e8e2d8;">
-          <div class="gallery-placeholder-inner">
-            <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-              <rect x="2" y="5" width="28" height="22" rx="2" stroke="#333" stroke-width="1.5"/>
-              <circle cx="11" cy="13" r="3" stroke="#333" stroke-width="1.5"/>
-              <path d="M2 24l7-7 5 5 4-4 12 9" stroke="#333" stroke-width="1.5" stroke-linejoin="round"/>
-            </svg>
-            <span>PRODUCT IMAGE</span>
+  <!-- Delivery Progress Bar -->
+  <div class="delivery-bar" id="delivery-bar">
+    <span class="delivery-bar-text" id="delivery-text">Lorem ipsum <em id="delivery-amount">£35.00</em> dolor sit amet</span>
+    <div class="delivery-progress-track">
+      <div class="delivery-progress-fill" id="delivery-fill" style="width:72%"></div>
+    </div>
+    <span class="delivery-bar-amount" id="delivery-counter">£215 / £150</span>
+  </div>
+
+  <!-- Cart Layout -->
+  <div class="cart-layout">
+
+    <!-- Left: Items -->
+    <div class="cart-main">
+      <div class="cart-items-header">
+        <span class="cart-items-label" id="items-label">Items (2)</span>
+      </div>
+
+      <!-- Item 1 -->
+      <div class="cart-item" id="item-1">
+        <div class="cart-item-image p1">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="rgba(10,10,10,0.2)" stroke-width="1">
+            <rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/>
+          </svg>
+        </div>
+        <div class="cart-item-body">
+          <span class="cart-item-category">Lorem Ipsum</span>
+          <h3 class="cart-item-name">Lorem Ipsum Dolor Sit Amet</h3>
+          <p class="cart-item-variant">50ml · Lorem Ipsum</p>
+          <div class="cart-item-qty-row">
+            <div class="qty-control">
+              <button class="qty-btn is-delete" id="dec-1" onclick="decrement(1)" title="Remove item">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="3 6 5 6 21 6"/>
+                  <path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/>
+                  <path d="M10 11v6M14 11v6"/>
+                  <path d="M9 6V4a1 1 0 011-1h4a1 1 0 011 1v2"/>
+                </svg>
+              </button>
+              <span class="qty-value" id="qty-1">1</span>
+              <button class="qty-btn" onclick="increment(1)">+</button>
+            </div>
           </div>
         </div>
-        <!-- Zoom -->
-        <button class="gallery-zoom">
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-            <circle cx="6" cy="6" r="4.5" stroke="#0A0A0A" stroke-width="1.2"/>
-            <path d="M9.5 9.5L13 13" stroke="#0A0A0A" stroke-width="1.2" stroke-linecap="round"/>
-          </svg>
-        </button>
-        <!-- Arrows -->
-        <button class="gallery-arrow left" onclick="changeImage(-1)">‹</button>
-        <button class="gallery-arrow right" onclick="changeImage(1)">›</button>
-        <!-- Dots -->
-        <div class="gallery-dots">
-          <button class="gallery-dot active" onclick="goImage(0)"></button>
-          <button class="gallery-dot" onclick="goImage(1)"></button>
-          <button class="gallery-dot" onclick="goImage(2)"></button>
+        <div class="cart-item-price-col">
+          <span class="cart-item-price" id="price-1">£130.00</span>
         </div>
       </div>
 
-      <!-- Thumbnails -->
-      <div class="thumb-row">
-        <button class="thumb-item active" style="background:#e8e2d8;" onclick="goImage(0)">
-          <div class="thumb-inner">
-            <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><rect x="1" y="3" width="18" height="14" rx="1.5" stroke="#333" stroke-width="1.2"/><circle cx="7" cy="9" r="2" stroke="#333" stroke-width="1.2"/><path d="M1 15l5-5 3.5 3.5 3-3 7.5 6" stroke="#333" stroke-width="1.2" stroke-linejoin="round"/></svg>
+      <!-- Item 2 -->
+      <div class="cart-item" id="item-2">
+        <div class="cart-item-image p2">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="rgba(10,10,10,0.2)" stroke-width="1">
+            <rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/>
+          </svg>
+        </div>
+        <div class="cart-item-body">
+          <span class="cart-item-category">Lorem Ipsum</span>
+          <h3 class="cart-item-name">Dolor Sit Amet Consectetur</h3>
+          <p class="cart-item-variant">15ml · Lorem Ipsum</p>
+          <div class="cart-item-qty-row">
+            <div class="qty-control">
+              <button class="qty-btn is-delete" id="dec-2" onclick="decrement(2)" title="Remove item">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="3 6 5 6 21 6"/>
+                  <path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/>
+                  <path d="M10 11v6M14 11v6"/>
+                  <path d="M9 6V4a1 1 0 011-1h4a1 1 0 011 1v2"/>
+                </svg>
+              </button>
+              <span class="qty-value" id="qty-2">1</span>
+              <button class="qty-btn" onclick="increment(2)">+</button>
+            </div>
           </div>
-        </button>
-        <button class="thumb-item" style="background:#d4c9b5;" onclick="goImage(1)">
-          <div class="thumb-inner">
-            <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><rect x="1" y="3" width="18" height="14" rx="1.5" stroke="#333" stroke-width="1.2"/><circle cx="7" cy="9" r="2" stroke="#333" stroke-width="1.2"/><path d="M1 15l5-5 3.5 3.5 3-3 7.5 6" stroke="#333" stroke-width="1.2" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="cart-item-price-col">
+          <span class="cart-item-price" id="price-2">£85.00</span>
+        </div>
+      </div>
+
+      <!-- Coupon -->
+      <div class="coupon-row">
+        <input class="coupon-input" id="coupon-input" placeholder="Lorem ipsum dolor" />
+        <button class="coupon-btn" id="coupon-btn" onclick="applyCoupon()">Apply</button>
+      </div>
+      <p class="coupon-msg" id="coupon-msg">Code applied — lorem ipsum 10%</p>
+
+      <!-- Order Notes -->
+      <button class="order-notes-toggle" id="notes-toggle" onclick="toggleNotes()">
+        <svg width="12" height="8" viewBox="0 0 12 8" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round">
+          <path d="M1 1l5 5 5-5"/>
+        </svg>
+        Lorem ipsum dolor sit amet
+      </button>
+      <div class="order-notes-body" id="notes-body">
+        <textarea class="order-notes-textarea" placeholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit..."></textarea>
+      </div>
+
+      <!-- Cross-sell -->
+      <div class="cross-sell">
+        <div class="cross-sell-header">
+          <span class="cross-sell-label">Lorem Ipsum Dolor</span>
+          <h3 class="cross-sell-title">Lorem ipsum dolor sit</h3>
+        </div>
+        <div class="cross-sell-grid">
+          <div class="cs-card">
+            <div class="cs-card-image">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(10,10,10,0.2)" stroke-width="1">
+                <rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/>
+              </svg>
+            </div>
+            <div class="cs-card-body">
+              <p class="cs-card-name">Lorem Ipsum Dolor Sit</p>
+              <p class="cs-card-price">£95</p>
+              <button class="cs-add-btn">Lorem Ipsum</button>
+            </div>
           </div>
-        </button>
-        <button class="thumb-item" style="background:#c8bda3;" onclick="goImage(2)">
-          <div class="thumb-inner">
-            <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><rect x="1" y="3" width="18" height="14" rx="1.5" stroke="#333" stroke-width="1.2"/><circle cx="7" cy="9" r="2" stroke="#333" stroke-width="1.2"/><path d="M1 15l5-5 3.5 3.5 3-3 7.5 6" stroke="#333" stroke-width="1.2" stroke-linejoin="round"/></svg>
+          <div class="cs-card">
+            <div class="cs-card-image">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(10,10,10,0.2)" stroke-width="1">
+                <rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/>
+              </svg>
+            </div>
+            <div class="cs-card-body">
+              <p class="cs-card-name">Amet Consectetur Adipiscing</p>
+              <p class="cs-card-price">£110</p>
+              <button class="cs-add-btn">Lorem Ipsum</button>
+            </div>
           </div>
-        </button>
+          <div class="cs-card">
+            <div class="cs-card-image">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(10,10,10,0.2)" stroke-width="1">
+                <rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/>
+              </svg>
+            </div>
+            <div class="cs-card-body">
+              <p class="cs-card-name">Sed Do Eiusmod</p>
+              <p class="cs-card-price">£45</p>
+              <button class="cs-add-btn">Lorem Ipsum</button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
-    <!-- BUY ZONE -->
-    <div class="pdp-buyside">
-      <!-- Tags -->
-      <div class="tag-row">
-        <span class="tag-pill">LOREM IPSUM</span>
-        <span class="tag-pill">DOLOR SIT AMET</span>
-        <span class="tag-pill">CONSECTETUR</span>
-      </div>
-      <!-- Size -->
-      <p class="product-size">00 ML / 0 FL. OZ</p>
-      <!-- Title -->
-      <h1 class="product-title">Lorem Ipsum<br>Dolor Sit Amet</h1>
-      <!-- Rating -->
-      <div class="rating-row">
-        <span class="stars">
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1l1.545 3.13L12 4.635l-2.5 2.437.59 3.441L7 8.855 4.91 10.513l.59-3.441L3 4.635l3.455-.505L7 1z" fill="#B8965A"/></svg>
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1l1.545 3.13L12 4.635l-2.5 2.437.59 3.441L7 8.855 4.91 10.513l.59-3.441L3 4.635l3.455-.505L7 1z" fill="#B8965A"/></svg>
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1l1.545 3.13L12 4.635l-2.5 2.437.59 3.441L7 8.855 4.91 10.513l.59-3.441L3 4.635l3.455-.505L7 1z" fill="#B8965A"/></svg>
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1l1.545 3.13L12 4.635l-2.5 2.437.59 3.441L7 8.855 4.91 10.513l.59-3.441L3 4.635l3.455-.505L7 1z" fill="#B8965A"/></svg>
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1l1.545 3.13L12 4.635l-2.5 2.437.59 3.441L7 8.855 4.91 10.513l.59-3.441L3 4.635l3.455-.505L7 1z" fill="#D9D3C7"/></svg>
-        </span>
-        <span class="rating-text">4.8 from 37 reviews</span>
-      </div>
-      <!-- Price -->
-      <div class="price-row">
-        <span class="price">£000.00</span>
-        <span class="stock-badge">IN STOCK</span>
-      </div>
-      <!-- Benefits -->
-      <div class="benefits-list">
-        <div class="benefit-item">
-          <svg width="18" height="18" viewBox="0 0 18 18" style="flex-shrink:0;margin-top:1px"><circle cx="9" cy="9" r="8" stroke="#6b6b63" stroke-width="1" fill="none"/><path d="M5.5 9l2.5 2.5 4.5-4.5" stroke="#6b6b63" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
-          <span class="benefit-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit</span>
+    <!-- Right: Sidebar -->
+    <div class="cart-sidebar">
+      <span class="sidebar-label">Order Summary</span>
+      <div class="summary-lines">
+        <div class="summary-line">
+          <span class="summary-line-label">Subtotal</span>
+          <span class="summary-line-value" id="summary-subtotal">£215.00</span>
         </div>
-        <div class="benefit-item">
-          <svg width="18" height="18" viewBox="0 0 18 18" style="flex-shrink:0;margin-top:1px"><circle cx="9" cy="9" r="8" stroke="#6b6b63" stroke-width="1" fill="none"/><path d="M5.5 9l2.5 2.5 4.5-4.5" stroke="#6b6b63" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
-          <span class="benefit-text">Sed do eiusmod tempor incididunt ut labore et dolore</span>
+        <div class="summary-line" id="discount-line" style="display:none">
+          <span class="summary-line-label">Lorem ipsum (code)</span>
+          <span class="summary-line-value" style="color:var(--gold)" id="summary-discount">−£21.50</span>
         </div>
-        <div class="benefit-item">
-          <svg width="18" height="18" viewBox="0 0 18 18" style="flex-shrink:0;margin-top:1px"><circle cx="9" cy="9" r="8" stroke="#6b6b63" stroke-width="1" fill="none"/><path d="M5.5 9l2.5 2.5 4.5-4.5" stroke="#6b6b63" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
-          <span class="benefit-text">Ut enim ad minim veniam quis nostrud exercitation</span>
+        <div class="summary-line">
+          <span class="summary-line-label">Lorem ipsum</span>
+          <span class="summary-line-value free" id="summary-shipping">Free</span>
         </div>
       </div>
-
-      <!-- Desktop ATC -->
-      <div class="atc-row">
-        <div class="qty-box">
-          <button class="qty-btn" onclick="changeQty(-1)">−</button>
-          <span class="qty-val" id="qty">1</span>
-          <button class="qty-btn" onclick="changeQty(1)">+</button>
-        </div>
-        <button class="atc-btn">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 2h1.5l2 8h6l1.5-5H5" stroke="white" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="7" cy="13" r="1" fill="white"/><circle cx="11" cy="13" r="1" fill="white"/></svg>
-          ADD TO CART
-        </button>
+      <div class="summary-divider"></div>
+      <div class="summary-total-line">
+        <span class="summary-total-label">Total</span>
+        <span class="summary-total-value" id="summary-total">£215.00</span>
       </div>
-
-      <!-- Accordions -->
-      <div class="accordion-wrap">
-        <div class="accordion-item">
-          <button class="accordion-trigger" onclick="toggleAccordion(this)">
-            <span class="accordion-label">KEY INGREDIENTS</span>
-            <span class="accordion-icon">−</span>
-          </button>
-          <div class="accordion-body open">
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis nostrud exercitation.</p>
-          </div>
+      <p class="summary-total-note">Lorem ipsum dolor sit amet</p>
+      <button class="checkout-btn">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.5" style="flex-shrink:0">
+          <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/>
+        </svg>
+        Proceed to Checkout
+      </button>
+      <div class="sidebar-trust">
+        <div class="trust-row">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+          <span>Lorem ipsum dolor sit amet consectetur</span>
         </div>
-        <div class="accordion-item">
-          <button class="accordion-trigger" onclick="toggleAccordion(this)">
-            <span class="accordion-label">HOW TO USE</span>
-            <span class="accordion-icon">+</span>
-          </button>
-          <div class="accordion-body">
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam.</p>
-          </div>
+        <div class="trust-row">
+          <svg width="14" height="12" viewBox="0 0 24 18" fill="none" stroke="var(--gold)" stroke-width="1.5"><path d="M1 1h13v12H1z"/><path d="M14 5h4l3 4v4h-7V5z"/><circle cx="5.5" cy="15.5" r="1.5"/><circle cx="18.5" cy="15.5" r="1.5"/></svg>
+          <span>Lorem ipsum dolor sit amet consectetur</span>
         </div>
-        <div class="accordion-item">
-          <button class="accordion-trigger" onclick="toggleAccordion(this)">
-            <span class="accordion-label">INGREDIENTS</span>
-            <span class="accordion-icon">+</span>
-          </button>
-          <div class="accordion-body">
-            <p>Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-          </div>
+        <div class="trust-row">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.5"><path d="M1 4v6h6"/><path d="M3.51 15a9 9 0 1 0 .49-5.02"/></svg>
+          <span>Lorem ipsum dolor sit amet</span>
         </div>
-        <div class="accordion-item">
-          <button class="accordion-trigger" onclick="toggleAccordion(this)">
-            <span class="accordion-label">DELIVERY</span>
-            <span class="accordion-icon">+</span>
-          </button>
-          <div class="accordion-body">
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
-          </div>
+        <div class="trust-row">
+          <svg width="12" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
+          <span>Lorem ipsum dolor sit amet</span>
         </div>
+      </div>
+      <div class="payment-icons">
+        <div class="payment-icon">Visa</div>
+        <div class="payment-icon">Mastercard</div>
+        <div class="payment-icon">Amex</div>
+        <div class="payment-icon">Apple Pay</div>
+        <div class="payment-icon">Klarna</div>
       </div>
     </div>
   </div>
 
-  <!-- Mobile Sticky ATC -->
-  <div class="sticky-atc">
-    <div class="sticky-qty">
-      <button class="sticky-qty-btn" onclick="changeQty(-1)">−</button>
-      <span class="sticky-qty-val" id="qty-mobile">1</span>
-      <button class="sticky-qty-btn" onclick="changeQty(1)">+</button>
+  <!-- Sticky Mobile Checkout Bar -->
+  <div class="mobile-checkout-bar">
+    <div class="mobile-checkout-bar-top">
+      <span class="mobile-checkout-total-label">Total</span>
+      <span class="mobile-checkout-total-value" id="mobile-total">£215.00</span>
     </div>
-    <button class="sticky-atc-btn">
-      <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M2 2h1.5l2 8h6l1.5-5H5" stroke="white" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="7" cy="13" r="1" fill="white"/><circle cx="11" cy="13" r="1" fill="white"/></svg>
-      ADD TO CART — £000.00
+    <button class="mobile-checkout-btn">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.5" style="flex-shrink:0">
+        <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/>
+      </svg>
+      Proceed to Checkout
     </button>
+    <p class="mobile-checkout-trust">Lorem ipsum · Dolor sit · Amet consectetur</p>
   </div>
 
   <script>
-    const IMAGES = [
-      { bg: '#e8e2d8' },
-      { bg: '#d4c9b5' },
-      { bg: '#c8bda3' },
-    ];
-    let current = 0;
-    let qty = 1;
+    const FREE_THRESHOLD = 150;
+    const TRASH_SVG = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 011-1h4a1 1 0 011 1v2"/></svg>`;
 
-    function goImage(i) {
-      current = i;
-      document.getElementById('main-img').style.background = IMAGES[i].bg;
-      document.querySelectorAll('.gallery-dot').forEach((d, idx) => d.classList.toggle('active', idx === i));
-      document.querySelectorAll('.thumb-item').forEach((t, idx) => t.classList.toggle('active', idx === i));
+    const items = {
+      1: { price: 130, qty: 1 },
+      2: { price: 85, qty: 1 }
+    };
+    let couponApplied = false;
+
+    function updateUI() {
+      let totalQty = 0;
+      let subtotal = 0;
+
+      for (const [id, item] of Object.entries(items)) {
+        if (item.qty === 0) continue;
+        totalQty += item.qty;
+        subtotal += item.price * item.qty;
+        document.getElementById(`qty-${id}`).textContent = item.qty;
+        document.getElementById(`price-${id}`).textContent = `£${(item.price * item.qty).toFixed(2)}`;
+
+        const decBtn = document.getElementById(`dec-${id}`);
+        if (item.qty === 1) {
+          decBtn.classList.add('is-delete');
+          decBtn.setAttribute('title', 'Remove item');
+          decBtn.innerHTML = TRASH_SVG;
+        } else {
+          decBtn.classList.remove('is-delete');
+          decBtn.setAttribute('title', 'Decrease quantity');
+          decBtn.textContent = '−';
+        }
+      }
+
+      const discount = couponApplied ? Math.round(subtotal * 0.1) : 0;
+      const shipping = subtotal >= FREE_THRESHOLD ? 0 : 6.95;
+      const total = subtotal - discount + shipping;
+      const progress = Math.min((subtotal / FREE_THRESHOLD) * 100, 100);
+      const remaining = Math.max(0, FREE_THRESHOLD - subtotal);
+
+      document.getElementById('items-label').textContent = `Items (${totalQty})`;
+      document.getElementById('nav-badge').textContent = totalQty;
+      document.getElementById('summary-subtotal').textContent = `£${subtotal.toFixed(2)}`;
+      document.getElementById('summary-total').textContent = `£${total.toFixed(2)}`;
+      document.getElementById('mobile-total').textContent = `£${total.toFixed(2)}`;
+
+      const shippingEl = document.getElementById('summary-shipping');
+      if (shipping === 0) {
+        shippingEl.textContent = 'Free';
+        shippingEl.className = 'summary-line-value free';
+      } else {
+        shippingEl.textContent = `£${shipping.toFixed(2)}`;
+        shippingEl.className = 'summary-line-value';
+      }
+
+      document.getElementById('discount-line').style.display = couponApplied ? 'flex' : 'none';
+      if (couponApplied) document.getElementById('summary-discount').textContent = `−£${discount.toFixed(2)}`;
+
+      document.getElementById('delivery-fill').style.width = `${progress}%`;
+      if (remaining > 0) {
+        document.getElementById('delivery-text').innerHTML = `Lorem ipsum <em>£${remaining.toFixed(2)}</em> dolor sit amet`;
+        document.getElementById('delivery-counter').textContent = `£${subtotal} / £${FREE_THRESHOLD}`;
+        document.getElementById('delivery-counter').style.display = '';
+      } else {
+        document.getElementById('delivery-text').innerHTML = `✓ &nbsp;Lorem ipsum dolor sit amet`;
+        document.getElementById('delivery-text').style.color = 'var(--gold)';
+        document.getElementById('delivery-counter').style.display = 'none';
+      }
     }
 
-    function changeImage(dir) {
-      goImage((current + dir + IMAGES.length) % IMAGES.length);
+    function increment(id) {
+      items[id].qty++;
+      updateUI();
     }
 
-    function changeQty(dir) {
-      qty = Math.max(1, qty + dir);
-      document.getElementById('qty').textContent = qty;
-      const m = document.getElementById('qty-mobile');
-      if (m) m.textContent = qty;
+    function decrement(id) {
+      if (items[id].qty === 1) {
+        document.getElementById(`item-${id}`).style.display = 'none';
+        items[id].qty = 0;
+      } else {
+        items[id].qty--;
+      }
+      updateUI();
     }
 
-    function toggleAccordion(btn) {
-      const body = btn.nextElementSibling;
-      const icon = btn.querySelector('.accordion-icon');
-      const isOpen = body.classList.contains('open');
-      body.classList.toggle('open', !isOpen);
-      icon.textContent = isOpen ? '+' : '−';
+    function applyCoupon() {
+      const val = document.getElementById('coupon-input').value.trim().toUpperCase();
+      if (val === 'RASHA10') {
+        couponApplied = true;
+        document.getElementById('coupon-btn').textContent = 'Applied ✓';
+        document.getElementById('coupon-msg').style.display = 'block';
+        updateUI();
+      }
     }
 
-    document.getElementById('hamburger').addEventListener('click', function() {
-      const h1 = document.getElementById('ham1');
-      const h2 = document.getElementById('ham2');
-      const h3 = document.getElementById('ham3');
-      const open = h2.style.opacity === '0';
-      h1.style.transform = open ? '' : 'translateY(6px) rotate(45deg)';
-      h2.style.opacity = open ? '' : '0';
-      h3.style.transform = open ? '' : 'translateY(-6px) rotate(-45deg)';
+    function toggleNotes() {
+      const toggle = document.getElementById('notes-toggle');
+      const body = document.getElementById('notes-body');
+      toggle.classList.toggle('open');
+      body.classList.toggle('open');
+    }
+
+    document.getElementById('coupon-input').addEventListener('keydown', e => {
+      if (e.key === 'Enter') applyCoupon();
     });
+
+    // Hamburger
+    let menuOpen = false;
+    document.getElementById('hamburger').addEventListener('click', () => {
+      menuOpen = !menuOpen;
+      document.getElementById('ham1').style.transform = menuOpen ? 'translateY(6px) rotate(45deg)' : '';
+      document.getElementById('ham2').style.opacity = menuOpen ? '0' : '1';
+      document.getElementById('ham3').style.transform = menuOpen ? 'translateY(-6px) rotate(-45deg)' : '';
+    });
+
+    updateUI();
   </script>
 </body>
 </html>
