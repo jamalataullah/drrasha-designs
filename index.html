@@ -1,11 +1,19 @@
-import { useState, useRef } from "react";
-
-const FontLink = () => (
-  <link
-    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400;1,500&family=Jost:wght@200;300;400&display=swap"
-    rel="stylesheet"
-  />
-);
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Anti-Wrinkle Injections | Dr Rasha Clinic</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400;1,500&family=Jost:wght@200;300;400&display=swap" rel="stylesheet" />
+  <!-- React 18 + Babel standalone (no build step) -->
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel">
+    const { useState, useRef } = React;
 
 const css = `
   :root {
@@ -1084,12 +1092,11 @@ function BaSlider({ concern }) {
 
 
 
-export default function TreatmentPage() {
+function TreatmentPage() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
     <>
-      <FontLink />
       <style>{css}</style>
 
             {/* Announcement Bar */}
@@ -1491,3 +1498,10 @@ export default function TreatmentPage() {
     </>
   );
 }
+
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<TreatmentPage />);
+  </script>
+</body>
+</html>
